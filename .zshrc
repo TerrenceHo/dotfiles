@@ -32,7 +32,7 @@ ZSH_THEME="robbyrussell"
 ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -83,3 +83,18 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias vi="vim"
+
+##################Globbing
+# Makes globs case-insensitive
+unsetopt case_glob
+
+# Makes globbing regexes case-insensitive
+unsetopt case_match
+
+# Allows globs to match dotfiles
+setopt glob_dots
+
+# Sorts numeric filenames numerically instead of lexicographically
+setopt numeric_glob_sort
+
