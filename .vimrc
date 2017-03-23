@@ -6,13 +6,13 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim' "Vundle to download other plugins
 Plugin 'L9' "
 Plugin 'vim-scripts/indentpython.vim' "Auto-indent
-" Bundle 'Valloric/YouCompleteMe' "AutoComplete
+" Plugin 'Valloric/YouCompleteMe' "AutoComplete
 Plugin 'tmhedberg/SimpylFold' "Makes Folding Code Better
 Plugin 'scrooloose/syntastic' "Checks syntax on each save
 Plugin 'scrooloose/nerdtree' "Gives you proper file tree
 Plugin 'jistr/vim-nerdtree-tabs' "Use tabs for file searching
 Plugin 'nvie/vim-flake8' "PEP8 checking 
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "Powerline 
+" Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "Powerline 
 
 call vundle#end()
 filetype plugin indent on
@@ -110,9 +110,9 @@ let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 "-------------PowerLine----------------
-set laststatus=2
-set term=xterm-256color
-set termencoding=utf-8
-set guifont=Ubuntu\ Mono\ derivative\ Powerline:10
+" set laststatus=2
+" set term=xterm-256color
+" set termencoding=utf-8
+" set guifont=Ubuntu\ Mono\ derivative\ Powerline:10
 " set guifont=Ubuntu\ Mono
 " let g:Powerline_symbols = 'fancy'
