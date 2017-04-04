@@ -59,6 +59,7 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export PATH="/Users/kho/anaconda/bin:$PATH" 
+export TERM=screen-256color
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -85,6 +86,7 @@ export PATH="/Users/kho/anaconda/bin:$PATH"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vi="vim"
+alias tmux='tmux -2'
 
 ##################Globbing
 # Makes globs case-insensitive
