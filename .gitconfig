@@ -1,0 +1,35 @@
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[user]
+	name = Terrence Ho
+	email = terrenceho.books@gmail.com
+[color]
+	ui = auto
+[core]
+	editor = vi
+[color "branch"]
+    current = yellow bold
+    local = yellow
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    frag = blue bold
+    old = red bold
+    new = green bold
+    whitespace = black reverse
+
+[color "status"]
+    header = normal
+    added = green
+    changed = yellow
+    untracked = red
+    branch = blue bold
+
+[push]
+    defualt = simple
+
+[branch "master"]
+    remote = origin
