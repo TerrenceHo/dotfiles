@@ -3,16 +3,20 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+let g:ycm_confirm_extra_conf = 0
 Plugin 'VundleVim/Vundle.vim' "Vundle to download other plugins
-Plugin 'L9' "
+Plugin 'L9' " seems to be mandatory for Vundle
 Plugin 'vim-scripts/indentpython.vim' "Auto-indent
-" Plugin 'Valloric/YouCompleteMe' "AutoComplete
+Plugin 'Valloric/YouCompleteMe' "AutoComplete
 Plugin 'tmhedberg/SimpylFold' "Makes Folding Code Better
-Plugin 'scrooloose/syntastic' "Checks syntax on each save
-Plugin 'scrooloose/nerdtree' "Gives you proper file tree
+Plugin 'scrooloose/syntastic' "Checks syntax when called :SyntasticCheck
+Plugin 'scrooloose/nerdtree' "Gives you proper file tree when called :NERDTree
+Plugin 'scrooloose/nerdtree-git-plugin' "Shows git status on NerdTree
 Plugin 'jistr/vim-nerdtree-tabs' "Use tabs for file searching
-Plugin 'nvie/vim-flake8' "PEP8 checking 
-" Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} "Powerline 
+Plugin 'nvie/vim-flake8' "PEP8 checking for python files
+Plugin 'vim-airline/vim-airline' "airline
+Plugin 'bling/vim-bufferline' "Shows buffers on airline
+Plugin 'tpope/vim-fugitive' "Git wrapper
 
 call vundle#end()
 filetype plugin indent on
@@ -28,8 +32,8 @@ set expandtab       " Expand TABs to spaces
 set autoindent 
 set textwidth=80
 set fileformat=unix
-"for js/html/css files, indent is 2
 
+"For HTML/CSS/Javascrip files, indent is 2
 "-----------------Web Dev Settings------------
 au BufNewFile,BufRead *.js,*.html,*.css
     \ set tabstop=2 |
@@ -61,7 +65,7 @@ func! WordProcessorMode()
     setlocal textwidth=80
     setlocal smartindent
     setlocal spell spelllang=en_us
-    setlocal noexpandtab
+    setlocal noexpandtab 
 endfu
 com! WP call WordProcessorMode()
 
@@ -109,6 +113,8 @@ nnoremap <space> za
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
+"--------------Syntastic---------------
+let g:syntastic_mode_map = { 'mode': 'passive' }
 "-------------PowerLine----------------
 " set laststatus=2
 " set term=xterm-256color
@@ -116,3 +122,8 @@ map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 " set guifont=Ubuntu\ Mono\ derivative\ Powerline:10
 " set guifont=Ubuntu\ Mono
 " let g:Powerline_symbols = 'fancy'
+"
+"------------Airline-------------------
+set laststatus=2
+set ttimeoutlen=50
+let g:airline#extensions#branch#enabled=1
