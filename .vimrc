@@ -3,11 +3,10 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-let g:ycm_confirm_extra_conf = 0
 Plugin 'VundleVim/Vundle.vim' "Vundle to download other plugins
 Plugin 'L9' " seems to be mandatory for Vundle
 Plugin 'vim-scripts/indentpython.vim' "Auto-indent
-Plugin 'Valloric/YouCompleteMe' "AutoComplete
+Plugin 'ajh17/VimCompletesMe' "Tab AutoComplete
 Plugin 'tmhedberg/SimpylFold' "Makes Folding Code Better
 Plugin 'scrooloose/syntastic' "Checks syntax when called :SyntasticCheck
 Plugin 'scrooloose/nerdtree' "Gives you proper file tree when called :NERDTree
@@ -17,6 +16,7 @@ Plugin 'nvie/vim-flake8' "PEP8 checking for python files
 Plugin 'vim-airline/vim-airline' "airline
 Plugin 'bling/vim-bufferline' "Shows buffers on airline
 Plugin 'tpope/vim-fugitive' "Git wrapper
+Plugin 'tpope/vim-commentary' "Comment code easily
 
 call vundle#end()
 filetype plugin indent on
@@ -86,6 +86,7 @@ set wildmenu
 set ignorecase
 set incsearch
 set hlsearch
+nmap <silent> ,/ :nohlsearch<CR>
 
 "----------------Copying----------------
 if has("clipboard")
@@ -109,12 +110,16 @@ set foldlevel=99
 " Enable folding with the spacebar
 nnoremap <space> za
 
-"---------------Auto-Complete----------
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"------------VimCompletesMe------------
+"Sets enter to accept completion
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 "--------------Syntastic---------------
 let g:syntastic_mode_map = { 'mode': 'passive' }
+
+"---------------NerdTree---------------
+map <C-n> :NERDTreeToggle<CR>
+
 "-------------PowerLine----------------
 " set laststatus=2
 " set term=xterm-256color
@@ -127,3 +132,10 @@ let g:syntastic_mode_map = { 'mode': 'passive' }
 set laststatus=2
 set ttimeoutlen=50
 let g:airline#extensions#branch#enabled=1
+
+"---------------Other------------------
+if has("autocmd") "Opens vim where cursor was last at
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+
