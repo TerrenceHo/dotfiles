@@ -17,6 +17,7 @@ Plugin 'vim-airline/vim-airline' "airline
 Plugin 'bling/vim-bufferline' "Shows buffers on airline
 Plugin 'tpope/vim-fugitive' "Git wrapper
 Plugin 'tpope/vim-commentary' "Comment code easily
+Plugin 'christoomey/vim-tmux-navigator' "navigate tmux/vim splits easily
 
 call vundle#end()
 filetype plugin indent on
