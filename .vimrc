@@ -18,6 +18,10 @@ Plugin 'bling/vim-bufferline' "Shows buffers on airline
 Plugin 'tpope/vim-fugitive' "Git wrapper
 Plugin 'tpope/vim-commentary' "Comment code easily
 Plugin 'christoomey/vim-tmux-navigator' "navigate tmux/vim splits easily
+Plugin 'jakedouglas/exuberant-ctags' "generates tags for files
+Plugin 'majutsushi/tagbar' "Easily navigate code with tags
+Plugin 'Townk/vim-autoclose' "Close out parenthesis
+Plugin 'vim-airline/vim-airline-themes' "Themes for airline
 
 call vundle#end()
 filetype plugin indent on
@@ -111,28 +115,28 @@ set foldlevel=99
 " Enable folding with the spacebar
 nnoremap <space> za
 
-"------------VimCompletesMe------------
+"----------Plugin Settings-------------
+" VimCompletesMe
 "Sets enter to accept completion
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-"--------------Syntastic---------------
-let g:syntastic_mode_map = { 'mode': 'passive' }
+" Syntastic
+let g:syntastic_mode_map = { 'mode': 'passive' } "Sets syntastic checker to command only
+nnoremap <silent> <F8> :SyntasticCheck<CR> 
 
-"---------------NerdTree---------------
-map <C-n> :NERDTreeToggle<CR>
+" NerdTree
+map <F9> :NERDTreeToggle<CR>
 
-"-------------PowerLine----------------
-" set laststatus=2
-" set term=xterm-256color
-" set termencoding=utf-8
-" set guifont=Ubuntu\ Mono\ derivative\ Powerline:10
-" set guifont=Ubuntu\ Mono
-" let g:Powerline_symbols = 'fancy'
-"
-"------------Airline-------------------
+" Airline
 set laststatus=2
 set ttimeoutlen=50
 let g:airline#extensions#branch#enabled=1
+
+" Tagbar
+let g:tagbar_ctags_bin='/usr/local/bin/ctags'  " Proper Ctags locations
+let g:tagbar_width=26 "Width for tagbar
+let g:tagbar_autoclose = 1
+nnoremap <silent> <F10> :TagbarToggle<CR> 
 
 "---------------Other------------------
 if has("autocmd") "Opens vim where cursor was last at
