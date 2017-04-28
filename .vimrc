@@ -22,6 +22,8 @@ Plugin 'jakedouglas/exuberant-ctags' "generates tags for files
 Plugin 'majutsushi/tagbar' "Easily navigate code with tags
 Plugin 'Townk/vim-autoclose' "Close out parenthesis
 Plugin 'vim-airline/vim-airline-themes' "Themes for airline
+Plugin 'lervag/vimtex', {'for':'markdown'} "vim support for latex documents
+
 
 call vundle#end()
 filetype plugin indent on
