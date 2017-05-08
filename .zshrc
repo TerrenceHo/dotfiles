@@ -17,6 +17,7 @@ fi
 #----------------------------Aliases----------------------
 alias vi="vim"
 alias g="git"
+eval "$(hub alias -s)"
 alias tmux='tmux -2'
 alias tl='tmux ls'
 alias whereami=display_info
