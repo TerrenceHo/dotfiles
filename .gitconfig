@@ -17,7 +17,8 @@
 [color]
 	ui = auto
 [core]
-	editor = vi
+	editor = /Applications/MacVim.app/Contents/MacOS/Vim
+	excludesfile = ~/.gitignore
 [color "branch"]
     current = yellow bold
     local = yellow
