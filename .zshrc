@@ -1,26 +1,11 @@
-#----------------------------Variables--------------------
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export PATH="/Users/kho/anaconda/bin:$PATH" 
-export TERM=screen-256color
-export EDITOR=vim
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
-
-#----------------------------Editor-----------------------
-set -o vi
-
-if (( $+commands[vim] )); then
-    export EDITOR="vim"
-    export USE_EDITOR=$EDITOR
-    export VISUAL=$EDITOR
-fi
-
 #----------------------------Aliases----------------------
+alias emacs="/usr/local/bin/emacs"
+alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 alias vi="vim"
 alias g="git"
 eval "$(hub alias -s)"
 alias tmux='tmux -2'
 alias tl='tmux ls'
-alias whereami=display_info
 alias sz='source ~/.zshrc'
 alias vz='vim ~/.zshrc'
 
