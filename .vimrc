@@ -20,7 +20,7 @@ Plugin 'vim-airline/vim-airline-themes' "Themes for airline
 Plugin 'tpope/vim-fugitive' "Git wrapper
 Plugin 'tpope/vim-commentary' "Comment code easily
 Plugin 'christoomey/vim-tmux-navigator' "navigate tmux/vim splits easily
-Plugin 'jakedouglas/exuberant-ctags' "generates tags for files
+" Plugin 'jakedouglas/exuberant-ctags' "generates tags for files
 Plugin 'majutsushi/tagbar' "Easily navigate code with tags
 " Plugin 'Townk/vim-autoclose' "Close out parenthesis
 Plugin 'lervag/vimtex', {'for':'markdown'} "vim support for latex documents
@@ -87,9 +87,12 @@ set cursorline
 set showmatch
 set wildmenu
 
-if has("autocmd") "Opens vim where cursor was last at
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
+function! PositionCursonFromViminfo()
+    if !(bufname("%") =~ '\(COMMIT_EDITMSG\)') && line("'\"") > 1 && line("'\"") <= line("$") 
+        exe "normal! g`\"" 
+    endif
+endfunction
+:au BufReadPost * call PositionCursonFromViminfo()
 
 inoremap {<cr> {<cr>}<c-o>O
 inoremap [<cr> [<cr>]<c-o>O<tab>
@@ -97,7 +100,8 @@ inoremap (<cr> (<cr>)<c-o>O
 
 " ---------------Buffers-----------------
 "Remap buffers to gb. Allows easy buffer access/listing
-nnoremap gb :ls<CR>:wb<Space> 
+nnoremap gb :ls<CR>:b<Space>
+" nnoremap gb :w<CR>:ls<CR>:b<Space> 
 
 " -------------Searching-----------------
 set ignorecase
@@ -130,9 +134,8 @@ set foldlevel=99
 nnoremap <space> za
 
 "----------Plugin Settings-------------
-" VimCompletesMe
-" Sets enter to accept completion
-" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" YouCompleteMe
+let g:ycm_path_to_python_interpreter = '/Users/kho/anaconda/bin/python'
 
 " Syntastic
 let g:syntastic_mode_map = { 'mode': 'passive' } "Sets syntastic checker to command only
