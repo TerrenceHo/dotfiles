@@ -13,8 +13,9 @@ cd ~/dotfiles
 git add .
 echo "=== Add Commit Message ==="
 git commit
-if git push origin master; then
-    echo "=== Released Dotfiles ==="
-else 
-    echo "=== Unable to push repository, try again later"
-fi
+git push origin master && echo "=== Released Dotfiles ===" || echo "=== Unable to push repository, try again later"
+# if git push origin master; then
+#     echo "=== Released Dotfiles ==="
+# else 
+#     echo "=== Unable to push repository, try again later"
+# fi
