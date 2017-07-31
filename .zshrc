@@ -2,8 +2,9 @@
 alias emacs="/usr/local/bin/emacs"
 alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 alias vi="vim"
+alias mvim="vim -g"
 alias g="git"
-eval "$(hub alias -s)"
+# eval "$(hub alias -s)"
 alias tmux='tmux -2'
 alias tl='tmux ls'
 alias sz='source ~/.zshrc'

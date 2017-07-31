@@ -39,7 +39,7 @@
     branch = blue bold
 
 [push]
-    defualt = simple
+    default = simple
 
 [branch "master"]
     remote = origin

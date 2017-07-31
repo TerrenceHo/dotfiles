@@ -10,14 +10,21 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 
-# Files that may be created as swap files
+# Files that may be created as swap files for vim
 .*.swp
 .*.swo
 
 # various log files
 .log
 
+# ctags files
+tags
+
+# temp files
 *.tmp
+
+# pyrope
+.ropeproject/
 
 # Word temporary
 ~$*.doc*

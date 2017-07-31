@@ -5,28 +5,26 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim' "Vundle to download other plugins
 Plugin 'L9' " seems to be mandatory for Vundle
-Plugin 'vim-scripts/indentpython.vim' "Auto-indent
 Plugin 'Valloric/YouCompleteMe' "AutoComplete server
-" Plugin 'ajh17/VimCompletesMe' "Tab AutoComplete
-Plugin 'tmhedberg/SimpylFold' "Makes Folding Code Better
 Plugin 'scrooloose/syntastic' "Checks syntax when called :SyntasticCheck
 Plugin 'scrooloose/nerdtree' "Gives you proper file tree when called :NERDTree
 Plugin 'scrooloose/nerdtree-git-plugin' "Shows git status on NerdTree
 Plugin 'jistr/vim-nerdtree-tabs' "Use tabs for file searching
-Plugin 'nvie/vim-flake8' "PEP8 checking for python files
 Plugin 'vim-airline/vim-airline' "airline
 Plugin 'bling/vim-bufferline' "Shows buffers on airline
 Plugin 'vim-airline/vim-airline-themes' "Themes for airline
 Plugin 'tpope/vim-fugitive' "Git wrapper
 Plugin 'tpope/vim-commentary' "Comment code easily
 Plugin 'christoomey/vim-tmux-navigator' "navigate tmux/vim splits easily
-" Plugin 'jakedouglas/exuberant-ctags' "generates tags for files
 Plugin 'majutsushi/tagbar' "Easily navigate code with tags
-" Plugin 'Townk/vim-autoclose' "Close out parenthesis
 Plugin 'lervag/vimtex', {'for':'markdown'} "vim support for latex documents
 Plugin 'fatih/vim-go'  "Plugin For Go builds
+" Plugin 'python-mode/python-mode' "Plugin for python
+" Plugin 'tmhedberg/SimpylFold' "Makes Folding Code Better for Python
+" Plugin 'vim-scripts/indentpython.vim' "Auto-indent
 Plugin 'vim-scripts/Emmet.vim' "HTML/CSS Plugin
 
+" Plugin 'Townk/vim-autoclose' "Close out parenthesis
 call vundle#end()
 filetype plugin indent on
 
@@ -49,6 +47,7 @@ au BufNewFile,BufRead *.js,*.html,*.css,*.gohtml
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
 iabbrev </ </<C-X><C-O>
+autocmd BufEnter *.gohtml :setlocal filetype=html
 
 "------------------Python Settings------------
 " Marks bad whitespace as red, for python
@@ -71,13 +70,14 @@ let python_highlight_all=1
 
 " Press F8 to run python code, allows for arguments
 filetype on
-autocmd FileType python nnoremap <buffer> <F8> :w \| exec '!clear; python' shellescape(@%, 1)
+autocmd FileType python nnoremap <buffer> <F8> :w \| exec '!clear; python' shellescape(@%, 1)<cr>
 
 " -------------Colors---------------------
+let g:solarized_termcolors=256 "needed for solaried
 syntax on
 syntax enable
+colorscheme distinguished "Color scheme
 set background=dark
-colorscheme distinguished
 
 " ----------UI Layout---------------------
 set number
@@ -100,8 +100,10 @@ inoremap (<cr> (<cr>)<c-o>O
 
 " ---------------Buffers-----------------
 "Remap buffers to gb. Allows easy buffer access/listing
-nnoremap gb :ls<CR>:b<Space>
-" nnoremap gb :w<CR>:ls<CR>:b<Space> 
+" nnoremap gb :w<CR>:buffers<CR>:buffer<Space>
+nnoremap gb :buffers<CR>:buffer<Space>
+" nnoremap gb :w <CR>:ls<CR>:b<Space>
+" nnoremap gb :w \| ls<CR>:b<Space>
 
 " -------------Searching-----------------
 set ignorecase
@@ -154,9 +156,20 @@ let g:tagbar_ctags_bin='/usr/local/bin/ctags'  " Proper Ctags locations
 let g:tagbar_width=26 "Width for tagbar
 let g:tagbar_autoclose = 1
 nnoremap <silent> <F10> :TagbarToggle<CR> 
+set tags=tags
+map <F7> :!ctags -R .<cr>
 
 " Vim-Go
 let g:go_fmt_command = "goimports"
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+" let g:go_auto_sameids = 1
 
 " ---------- Mini WordProcessor -------------
 func! WordProcessorMode()

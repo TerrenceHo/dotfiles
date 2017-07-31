@@ -1,6 +1,6 @@
 #-------------Environment Variables----------------
 export PATH="$PATH:$HOME/.rvm/bin" # Ruby
-export PATH="/Users/kho/anaconda/bin:$PATH" # Anaconda/Python
+export PATH="$PATH:/Users/kho/anaconda/bin" # Anaconda/Python
 export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH" # Postgres
 
 # Golang environment Settings
