@@ -42,7 +42,7 @@ set fileformat=unix
 
 "For HTML/CSS/Javascrip files, indent is 2
 "-----------------Web Dev Settings------------
-au BufNewFile,BufRead *.js,*.html,*.css,*.gohtml
+au BufNewFile,BufRead *.html,*.css,*.gohtml
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
@@ -67,6 +67,16 @@ if 'VIRTUAL_ENV' in os.environ:
 EOF
 
 let python_highlight_all=1
+
+"-----------------Git Commits------------------
+au FileType gitcommit set tw=72
+
+"--------------------Makefiles-----------------
+autocmd BufEnter ?makefile* set include^s\=include
+autocmd BufLeave ?makefile* set include&
+
+"--------------------Markdown------------------
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Press F8 to run python code, allows for arguments
 filetype on
@@ -99,11 +109,8 @@ inoremap [<cr> [<cr>]<c-o>O<tab>
 inoremap (<cr> (<cr>)<c-o>O
 
 " ---------------Buffers-----------------
-"Remap buffers to gb. Allows easy buffer access/listing
-" nnoremap gb :w<CR>:buffers<CR>:buffer<Space>
 nnoremap gb :buffers<CR>:buffer<Space>
-" nnoremap gb :w <CR>:ls<CR>:b<Space>
-" nnoremap gb :w \| ls<CR>:b<Space>
+set hidden
 
 " -------------Searching-----------------
 set ignorecase
@@ -112,13 +119,12 @@ set hlsearch
 nmap <silent> ,/ :nohlsearch<CR>
 
 "----------------Copying----------------
-if $TMUX == ''
-    set clipboard+=unnamed
-endif
-" if has("clipboard")
-"     set clipboard=unnamed
+" if $TMUX == ''
+"     set clipboard+=unnamed
 " endif
+set clipboard=unnamed
 
+set pastetoggle=<F2>
 
 "---------------Splitting--------------
 set splitbelow
@@ -137,7 +143,10 @@ nnoremap <space> za
 
 "----------Plugin Settings-------------
 " YouCompleteMe
-let g:ycm_path_to_python_interpreter = '/Users/kho/anaconda/bin/python'
+let g:ycm_server_python_interpreter = '/usr/bin/python'
+let g:ycm_python_binary_path = '/Users/kho/anaconda/bin/python'
+let g:ycm_server_keep_logfiles = 1
+let g:ycm_server_log_level = 'debug'
 
 " Syntastic
 let g:syntastic_mode_map = { 'mode': 'passive' } "Sets syntastic checker to command only

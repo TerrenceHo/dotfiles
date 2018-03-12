@@ -17,7 +17,7 @@
 [color]
 	ui = auto
 [core]
-	editor = /Applications/MacVim.app/Contents/MacOS/Vim
+	editor = vim
 	excludesfile = ~/.gitignore
 [color "branch"]
     current = yellow bold
@@ -37,9 +37,7 @@
     changed = yellow
     untracked = red
     branch = blue bold
-
 [push]
     default = simple
-
 [branch "master"]
     remote = origin
