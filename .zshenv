@@ -1,19 +1,29 @@
 #-------------Environment Variables----------------
-export PATH="$PATH:/usr/local/bin" 
-export PATH="/Users/kho/anaconda/bin:$PATH" # Anaconda/Python
-export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH" # Postgres
 
-# Golang environment Settings
-export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:$(go env GOPATH)/bin # setting my GOPATH
-export GOPATH=$(go env GOPATH) # easier way of saying GOPATH
-export GOROOT=/usr/local/go
+if [[ -z $TMUX ]]; then
+    export PATH=$PATH:~/.local/bin
+    # export PATH=$PATH:~/anaconda/bin # Anaconda/Python
+
+    # Golang environment Settings
+    export PATH=$PATH:$(go env GOPATH)/bin # setting my GOPATH
+    export GOPATH=$(go env GOPATH) # easier way of saying GOPATH
+    export GOROOT=/usr/local/go
 
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/kho/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/kho/google-cloud-sdk/path.zsh.inc'; fi
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/kho/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/kho/google-cloud-sdk/completion.zsh.inc'; fi
+    # The next line updates PATH for the Google Cloud SDK.
+    if [ -f '/Users/kho/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/kho/google-cloud-sdk/path.zsh.inc'; fi
+    # The next line enables shell command completion for gcloud.
+    if [ -f '/Users/kho/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/kho/google-cloud-sdk/completion.zsh.inc'; fi
+
+    # opam configuration
+    test -r /Users/kho/.opam/opam-init/init.zsh && . /Users/kho/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+    # racket
+    export PATH=$PATH:"/Applications/Racket v7.1/bin"
+
+    # RUBY
+    eval "$(rbenv init -)"
+fi
 
 # shell export settings
 export TERM=screen-256color
@@ -27,5 +37,4 @@ if (($+commands[vim] )); then
     export VISUAL=$EDITOR
 fi
 
-export SPOTIFY_CLIENT_ID="3a0151c1b0734cd587a51918251ff40d"
-export SPOTIFY_CLIENT_SECRET="458e249b0e4648559479038067eb8f26"
+. /Users/kho/anaconda/etc/profile.d/conda.sh

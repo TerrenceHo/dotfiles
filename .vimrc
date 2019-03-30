@@ -1,32 +1,59 @@
 " --------------Plugins---------------------
 set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim' "Vundle to download other plugins
-Plugin 'L9' " seems to be mandatory for Vundle
-Plugin 'Valloric/YouCompleteMe' "AutoComplete server
-Plugin 'scrooloose/syntastic' "Checks syntax when called :SyntasticCheck
-Plugin 'scrooloose/nerdtree' "Gives you proper file tree when called :NERDTree
-Plugin 'scrooloose/nerdtree-git-plugin' "Shows git status on NerdTree
-Plugin 'jistr/vim-nerdtree-tabs' "Use tabs for file searching
-Plugin 'vim-airline/vim-airline' "airline
-Plugin 'bling/vim-bufferline' "Shows buffers on airline
-Plugin 'vim-airline/vim-airline-themes' "Themes for airline
-Plugin 'tpope/vim-fugitive' "Git wrapper
-Plugin 'tpope/vim-commentary' "Comment code easily
-Plugin 'christoomey/vim-tmux-navigator' "navigate tmux/vim splits easily
-Plugin 'majutsushi/tagbar' "Easily navigate code with tags
-Plugin 'lervag/vimtex', {'for':'markdown'} "vim support for latex documents
-Plugin 'fatih/vim-go'  "Plugin For Go builds
-" Plugin 'python-mode/python-mode' "Plugin for python
-" Plugin 'tmhedberg/SimpylFold' "Makes Folding Code Better for Python
-" Plugin 'vim-scripts/indentpython.vim' "Auto-indent
-Plugin 'vim-scripts/Emmet.vim' "HTML/CSS Plugin
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+call plug#begin('~/.vim/plugged')
+Plug 'Valloric/YouCompleteMe' "AutoComplete server
+Plug 'scrooloose/nerdtree' "Gives you proper file tree when called :NERDTre
+Plug 'scrooloose/nerdtree-git-plugin' "Shows git status on NerdTree
+Plug 'jistr/vim-nerdtree-tabs' "Use tabs for file searching
+Plug 'vim-airline/vim-airline' "airline
+Plug 'bling/vim-bufferline' "Shows buffers on airline
+Plug 'vim-airline/vim-airline-themes' "Themes for airline
+Plug 'tpope/vim-fugitive' "Git wrapper
+Plug 'tpope/vim-commentary' "Comment code easily
+Plug 'tpope/vim-surround' "Tool to surround text with certain characters
+Plug 'christoomey/vim-tmux-navigator' "navigate tmux/vim splits easily
+Plug 'majutsushi/tagbar' "Easily navigate code with tags
+Plug 'lervag/vimtex', {'for':'markdown'} "vim support for latex documents
+Plug 'fatih/vim-go'  "Plugin For Go builds
+Plug 'vimwiki/vimwiki' "Vim wiki
+Plug '/usr/local/opt/fzf' "fzf binary
+Plug 'junegunn/fzf.vim' "fzf-vim
+call plug#end()
 
-" Plugin 'Townk/vim-autoclose' "Close out parenthesis
-call vundle#end()
-filetype plugin indent on
+" filetype off
+" set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
+" Plugin 'VundleVim/Vundle.vim' "Vundle to download other plugins
+" Plugin 'L9' " seems to be mandatory for Vundle
+" Plugin 'Valloric/YouCompleteMe' "AutoComplete server
+" Plugin 'scrooloose/syntastic' "Checks syntax when called :SyntasticCheck
+" Plugin 'scrooloose/nerdtree' "Gives you proper file tree when called :NERDTree
+" Plugin 'scrooloose/nerdtree-git-plugin' "Shows git status on NerdTree
+" Plugin 'jistr/vim-nerdtree-tabs' "Use tabs for file searching
+" Plugin 'vim-airline/vim-airline' "airline
+" Plugin 'bling/vim-bufferline' "Shows buffers on airline
+" Plugin 'vim-airline/vim-airline-themes' "Themes for airline
+" Plugin 'tpope/vim-fugitive' "Git wrapper
+" Plugin 'tpope/vim-commentary' "Comment code easily
+" Plugin 'christoomey/vim-tmux-navigator' "navigate tmux/vim splits easily
+" Plugin 'majutsushi/tagbar' "Easily navigate code with tags
+" Plugin 'lervag/vimtex', {'for':'markdown'} "vim support for latex documents
+" Plugin 'fatih/vim-go'  "Plugin For Go builds
+" Plugin 'vimwiki/vimwiki' "Vim wiki
+" " Plugin '/usr/local/bin/fzf' "fzf binary
+" Plugin 'junegunn/fzf.vim' "fzf-vim
+" " Plugin 'python-mode/python-mode' "Plugin for python
+" " Plugin 'tmhedberg/SimpylFold' "Makes Folding Code Better for Python
+" " Plugin 'vim-scripts/indentpython.vim' "Auto-indent
+" " Plugin 'vim-scripts/Emmet.vim' "HTML/CSS Plugin
+" " Plugin 'Townk/vim-autoclose' "Close out parenthesis
+" call vundle#end()
+" filetype plugin indent on
 
 " -------------Tabs/Spacing------------------
 set tabstop=4       " The width of a TAB is set to 4.
@@ -39,10 +66,11 @@ set expandtab       " Expand TABs to spaces
 set autoindent 
 set textwidth=80
 set fileformat=unix
+set backspace=indent,eol,start
 
 "For HTML/CSS/Javascrip files, indent is 2
 "-----------------Web Dev Settings------------
-au BufNewFile,BufRead *.html,*.css,*.gohtml
+au BufNewFile,BufRead *.html,*.htm,*.css,*.gohtml,*.js,*.vue
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
@@ -53,20 +81,8 @@ autocmd BufEnter *.gohtml :setlocal filetype=html
 " Marks bad whitespace as red, for python
 highlight BadWhitespace ctermbg=red guibg=red
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
-set encoding=utf-8
-
-"For Virtual Enrivonment Python
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
-
 let python_highlight_all=1
+set encoding=utf-8
 
 "-----------------Git Commits------------------
 au FileType gitcommit set tw=72
@@ -83,7 +99,7 @@ filetype on
 autocmd FileType python nnoremap <buffer> <F8> :w \| exec '!clear; python' shellescape(@%, 1)<cr>
 
 " -------------Colors---------------------
-let g:solarized_termcolors=256 "needed for solaried
+let g:solarized_termcolors=256 "needed for solarzied
 syntax on
 syntax enable
 colorscheme distinguished "Color scheme
@@ -107,6 +123,11 @@ endfunction
 inoremap {<cr> {<cr>}<c-o>O
 inoremap [<cr> [<cr>]<c-o>O<tab>
 inoremap (<cr> (<cr>)<c-o>O
+inoremap (<SPACE> ()<Esc>i
+inoremap {<SPACE> {}<Esc>i
+inoremap [<SPACE> []<Esc>i
+inoremap "<SPACE> ""<Esc>i
+inoremap <<SPACE> <><Esc>i
 
 " ---------------Buffers-----------------
 nnoremap gb :buffers<CR>:buffer<Space>
@@ -143,7 +164,7 @@ nnoremap <space> za
 
 "----------Plugin Settings-------------
 " YouCompleteMe
-let g:ycm_server_python_interpreter = '/usr/bin/python'
+" let g:ycm_server_python_interpreter = '/usr/local/bin/python'
 let g:ycm_python_binary_path = '/Users/kho/anaconda/bin/python'
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_server_log_level = 'debug'
@@ -180,12 +201,25 @@ let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
 " let g:go_auto_sameids = 1
 
+
+" Vim Wiki
+let wiki_1 = {}
+let wiki_1.path = '~/vimwiki_personal/'
+let wiki_1.syntax = 'markdown'
+let wiki_1.ext = '.md'
+
+let g:vimwiki_list = [wiki_1]
+let g:vimwiki_ext2syntax = {'.md':'markdown', '.markdown':'markdown',  'mdown':'markdown'}
+
+" Fzf
+map ; :Files<CR>
+
 " ---------- Mini WordProcessor -------------
-func! WordProcessorMode()
-    setlocal textwidth=80
-    setlocal smartindent
-    setlocal spell spelllang=en_us
-    setlocal noexpandtab 
-endfu
-com! WP call WordProcessorMode()
+" func! WordProcessorMode()
+"     setlocal textwidth=80
+"     setlocal smartindent
+"     setlocal spell spelllang=en_us
+"     setlocal noexpandtab 
+" endfu
+" com! WP call WordProcessorMode()
 

@@ -2,7 +2,8 @@
 alias emacs="/usr/local/bin/emacs"
 # alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 alias vi="vim"
-alias mvim="vim -g"
+alias vim="/usr/local/bin/vim"
+alias vw="vim ~/vimwiki_personal/index.md"
 alias g="git"
 # eval "$(hub alias -s)"
 alias tmux='tmux -2'
@@ -49,9 +50,6 @@ alias -g T='| tail'
 alias -g G='| grep'
 alias -g L="| less"
 alias -g M="| most"
-
-# RUBY
-eval "$(rbenv init -)"
 
 #----------------------------Globbing--------------------
 # Makes globs case-insensitive
