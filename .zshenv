@@ -3,6 +3,8 @@
 if [[ -z $TMUX ]]; then
     export PATH=$PATH:~/.local/bin
     # export PATH=$PATH:~/anaconda/bin # Anaconda/Python
+    
+    export PATH="/usr/local/opt/gettext/bin:$PATH"
 
     # Golang environment Settings
     export PATH=$PATH:$(go env GOPATH)/bin # setting my GOPATH

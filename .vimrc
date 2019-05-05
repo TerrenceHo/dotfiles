@@ -126,8 +126,8 @@ inoremap (<cr> (<cr>)<c-o>O
 inoremap (<SPACE> ()<Esc>i
 inoremap {<SPACE> {}<Esc>i
 inoremap [<SPACE> []<Esc>i
-inoremap "<SPACE> ""<Esc>i
-inoremap <<SPACE> <><Esc>i
+" inoremap "<SPACE> ""<Esc>i
+" inoremap <<SPACE> <><Esc>i
 
 " ---------------Buffers-----------------
 nnoremap gb :buffers<CR>:buffer<Space>
@@ -191,6 +191,7 @@ map <F7> :!ctags -R .<cr>
 
 " Vim-Go
 let g:go_fmt_command = "goimports"
+let g:go_def_mode='gopls'
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
@@ -207,19 +208,17 @@ let wiki_1 = {}
 let wiki_1.path = '~/vimwiki_personal/'
 let wiki_1.syntax = 'markdown'
 let wiki_1.ext = '.md'
+let g:vimwiki_global_ext = 0
 
 let g:vimwiki_list = [wiki_1]
-let g:vimwiki_ext2syntax = {'.md':'markdown', '.markdown':'markdown',  'mdown':'markdown'}
+" let g:vimwiki_ext2syntax = {'.md':'markdown', '.markdown':'markdown',  'mdown':'markdown'}
 
 " Fzf
 map ; :Files<CR>
 
-" ---------- Mini WordProcessor -------------
-" func! WordProcessorMode()
-"     setlocal textwidth=80
-"     setlocal smartindent
-"     setlocal spell spelllang=en_us
-"     setlocal noexpandtab 
-" endfu
-" com! WP call WordProcessorMode()
-
+" vimtex
+let g:flavor='latex'
+" let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'

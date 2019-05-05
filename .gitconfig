@@ -19,6 +19,7 @@
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
+    pager = /usr/bin/less
 [color "branch"]
     current = yellow bold
     local = yellow
