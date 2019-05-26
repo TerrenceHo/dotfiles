@@ -11,6 +11,9 @@ if [[ -z $TMUX ]]; then
     export GOPATH=$(go env GOPATH) # easier way of saying GOPATH
     export GOROOT=/usr/local/go
 
+    # Rust
+    export PATH="$HOME/.cargo/bin:$PATH"
+
 
     # The next line updates PATH for the Google Cloud SDK.
     if [ -f '/Users/kho/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/kho/google-cloud-sdk/path.zsh.inc'; fi

@@ -1,6 +1,9 @@
 set nocompatible
 let mapleader = ";"
 
+let g:python2_host_prog = '/usr/local/Cellar/python@2/2.7.15_1/bin/python'  
+let g:python3_host_prog = '/usr/local/Cellar/python/3.7.0/bin/python3'  
+
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -9,13 +12,13 @@ endif
 
 " ----- Plugins -----
 call plug#begin('~/.local/share/nvim/plugged')
-Plug 'Lokaltog/vim-distinguished' "distinguished color scheme
 Plug 'junegunn/vim-easy-align' "Easy alignment of text
 Plug 'tpope/vim-repeat' 
 Plug 'tpope/vim-surround' " Surround text
 Plug 'tpope/vim-commentary' "Comment code easily
 
 " Visual
+Plug 'Lokaltog/vim-distinguished' "distinguished color scheme
 Plug 'vim-airline/vim-airline' "airline
 Plug 'bling/vim-bufferline' "Shows buffers on airline
 Plug 'vim-airline/vim-airline-themes' "Themes for airline
@@ -31,12 +34,16 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
+" Plug 'liuchengxu/vista.vim' " Tagbar for LSP
 
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries' } "Go Plugin
+Plug 'rust-lang/rust.vim' "Rust Plugin
+Plug 'ambv/black' "Python Formatting
 
-" Plug 'ambv/black' "Python Formatting
-
+" Writing
 Plug 'vimwiki/vimwiki' "Vim wiki
+Plug 'junegunn/goyo.vim' "Distraction free writing
+Plug 'junegunn/limelight.vim' "Highlights current line
 
 " Tmux Integration
 Plug 'christoomey/vim-tmux-navigator' "navigate tmux/vim splits easily
@@ -68,6 +75,7 @@ set showcmd
 " set cursorline
 set showmatch
 set wildmenu
+set cmdheight=2
 
 " Make vim resize when host is resized
 :autocmd VimResized * wincmd =
@@ -97,11 +105,16 @@ set foldlevel=99
 " Enable folding with the spacebar
 nnoremap <space> za
 
+" ----- Brackets -----
+inoremap {<cr> {<cr>}<c-o>O
+inoremap [<cr> [<cr>]<c-o>O<tab>
+inoremap (<cr> (<cr>)<c-o>O
+
 " ----- Keybindings -----
 nnoremap <leader>t :NERDTreeToggle<CR>
 
 nnoremap <leader>f :Files<CR>
-nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>b :buffers<CR>:buffer<Space>
 nnoremap <leader>d :bd<CR>
 
 nnoremap <leader>s :w<CR>
@@ -142,27 +155,34 @@ let g:airline#extensions#branch#enabled=1
 " ----- Language Client -----
 let g:LanguageClient_serverCommands = {
   \ 'go': ['gopls'],
-  \ 'python': ['pyls'],
+  \ 'rust': ['rls'],
   \ }
 nnoremap <leader>r :call LanguageClient_contextMenu()<CR>
 
 " ----- Deoplete -----
 let g:deoplete#enable_at_startup = 1
+imap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
+imap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
+imap <expr> <cr>    pumvisible() ? deoplete#close_popup() : "\<cr>"
+inoremap <silent><expr><C-Space> deoplete#mappings#manual_complete()
 " let g:deoplete#enable_camel_case = 1
 " set completeopt+=noinsert
 " set completeopt+=noselect
 " set completeopt-=preview
-" inoremap <silent><expr><C-Space> deoplete#mappings#manual_complete()
-" imap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
-" imap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
-" imap <expr> <cr>    pumvisible() ? deoplete#close_popup() : "\<cr>"
 
 " ----- Echodoc -----
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type = 'signature'
 
+" ----- Vista -----
+let g:vista_executive_for = {
+  \ 'go': 'lcn',
+  \ }
+nnoremap <leader>v :Vista!!<CR>
+
 " ----- Vim-Go -----
 let g:go_fmt_command = "goimports"
+let g:go_def_mode='gopls'
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
@@ -171,6 +191,12 @@ let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
+
+" ----- Rust -----
+let g:rustfmt_autosave = 1
+
+" ----- Black -----
+autocmd BufWritePre *.py execute ':Black'
 
 " ----- Vim Wiki -----
 let wiki_1 = {}
@@ -181,3 +207,8 @@ let wiki_1.ext = '.md'
 let g:vimwiki_list = [wiki_1]
 " let g:vimwiki_ext2syntax = {'.md':'markdown', '.markdown':'markdown',  'mdown':'markdown'}
 
+" ----- fzf -----
+set rtp+=/usr/local/opt/fzf
+
+" ----- Easy Align -----
+xmap ga <Plug>(EasyAlign)

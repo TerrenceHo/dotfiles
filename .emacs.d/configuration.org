@@ -1,0 +1,154 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Terrence Ho
+#+EMAIL: terrenceho.books@gmail.com
+
+* My Configuration
+
+This is a literate programming configuration file, written in Org. I can write
+code blocks within this file along side documentation, so I can keep track of
+everything that is being configured. =org-babel= is used to execute the ELisp
+code being written.
+
+* Configure with =use-package=
+
+Use-package is used to install and configure my packages.
+
+The .emacs startup file should already use =use-package=, this ensures that we
+are have it already.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+#+END_SRC
+
+Always compile packages, using the newest version available. Run with the
+cutting edge.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-compile
+    :config (auto-compile-on-load-mode))
+
+  (setq load-prefer-newer t)
+#+END_SRC
+
+* Overall Configurations
+** Using Sensible Defaults
+
+   [[https://github.com/hrs/sensible-defaults.el][sensible-defaults.el]] enables the following:
+
+     - Ensuring that files end with newlines,
+     - Always enabling syntax highlighting,
+     - Increasing the garbage collection threshold,
+     - Defaulting line-length to 80 characters,
+     - Creating parent directories after saving a deeply nested file,
+     - Making dired file sizes human-readable,
+
+ #+BEGIN_SRC emacs-lisp
+   (load "~/code/src/github.com/hrs/sensible-defaults.el/sensible-defaults.el")
+   (sensible-defaults/open-files-from-home-directory)
+   (sensible-defaults/increase-gc-threshold)
+   (sensible-defaults/delete-trailing-whitespace)
+   (sensible-defaults/treat-camelcase-as-separate-words)
+   (sensible-defaults/automatically-follow-symlinks)
+   (sensible-defaults/make-scripts-executable)
+   (sensible-defaults/single-space-after-periods)
+   (sensible-defaults/offer-to-create-parent-directories-on-save)
+   (sensible-defaults/apply-changes-to-highlighted-region)
+   (sensible-defaults/overwrite-selected-text)
+   (sensible-defaults/ensure-that-files-end-with-newline)
+   (sensible-defaults/confirm-closing-emacs)
+   (sensible-defaults/quiet-startup)
+   (sensible-defaults/make-dired-file-sizes-human-readable)
+   (sensible-defaults/shorten-yes-or-no)
+   (sensible-defaults/always-highlight-code)
+   (sensible-defaults/refresh-buffers-when-files-change)
+   (sensible-defaults/show-matching-parens)
+   (sensible-defaults/set-default-line-length-to 80)
+   (sensible-defaults/open-clicked-files-in-same-frame-on-mac)
+   (sensible-defaults/yank-to-point-on-mouse-click)
+   (sensible-defaults/use-all-keybindings)
+   (sensible-defaults/backup-to-temp-directory)
+ #+END_SRC
+
+** Color Scheme
+
+Using solarized dark theme.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package solarized-theme
+    :config
+    (load-theme 'solarized-dark t)
+    (setq solarized-scale-org-headlines nil)
+    (setq solarized-use-variable-pitch nil
+	solarized-height-plus-1 1.0
+	solarized-height-plus-2 1.0
+	solarized-height-plus-3 1.0
+	solarized-height-plus-4 1.0))
+#+END_SRC
+
+** Personal Information
+
+ #+BEGIN_SRC emacs-lisp
+ (setq user-full-name "Harry R. Schwartz"
+         user-mail-address "hello@harryrschwartz.com")
+ #+END_SRC emacs-lisp
+
+* =evil-mode=
+
+Using =evil-mode= is the only way to use emacs. Provides vim-bindings as an emulation layer on top of emacs.
+
+Resources:
+    - [[https://www.emacswiki.org/emacs/Evil][EmacsWiki/Evil]]
+    - [[https://github.com/noctuid/evil-guide][evil-guide]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :config
+    (evil-mode 1))
+#+END_SRC
+
+Enable surround everywhere
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1))
+#+END_SRC
+
+Use evil with org: sets org-agenda
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-org
+    :after org
+    :config
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook
+              (lambda () (evil-org-set-key-theme)))
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+#+END_SRC
+
+* =org-mode=
+
+Task Management with Org Mode.
+
+Transform asterisks to pretty bullets.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :init
+    (add-hook 'org-mode-hook 'org-bullets-mode))
+#+END_SRC
+
+I like seeing a little downward-pointing arrow instead of the usual ellipsis
+(=...=) that org displays when there's stuff under a header.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-ellipsis "⤵")
+#+END_SRC
+
+Use syntax highlighting in source blocks while editing.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+#+END_SRC

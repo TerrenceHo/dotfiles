@@ -2,7 +2,7 @@
 alias emacs="/usr/local/bin/emacs"
 # alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 alias vi="vim"
-alias vim="/usr/local/bin/vim"
+alias vim="nvim"
 alias vw="vim ~/vimwiki_personal/index.md"
 alias g="git"
 # eval "$(hub alias -s)"
