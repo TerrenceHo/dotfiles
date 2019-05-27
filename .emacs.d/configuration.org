@@ -21,6 +21,8 @@ are have it already.
   (setq use-package-always-ensure t)
 #+END_SRC
 
+** Using the latest sources
+
 Always compile packages, using the newest version available. Run with the
 cutting edge.
 
@@ -77,25 +79,25 @@ Using solarized dark theme.
 #+BEGIN_SRC emacs-lisp
   (use-package solarized-theme
     :config
-    (load-theme 'solarized-dark t)
     (setq solarized-scale-org-headlines nil)
     (setq solarized-use-variable-pitch nil
 	solarized-height-plus-1 1.0
 	solarized-height-plus-2 1.0
 	solarized-height-plus-3 1.0
 	solarized-height-plus-4 1.0))
+    (load-theme 'solarized-dark t)
 #+END_SRC
 
 ** Personal Information
 
  #+BEGIN_SRC emacs-lisp
- (setq user-full-name "Harry R. Schwartz"
-         user-mail-address "hello@harryrschwartz.com")
- #+END_SRC emacs-lisp
-
+ (setq user-full-name "Terrence Ho"
+       user-mail-address "terrenceho.books@gmail.com")
+ #+END_SRC
 * =evil-mode=
 
-Using =evil-mode= is the only way to use emacs. Provides vim-bindings as an emulation layer on top of emacs.
+Using =evil-mode= is the only way to use emacs. Provides vim-bindings as an
+emulation layer on top of emacs.
 
 Resources:
     - [[https://www.emacswiki.org/emacs/Evil][EmacsWiki/Evil]]
@@ -107,6 +109,8 @@ Resources:
     (evil-mode 1))
 #+END_SRC
 
+** =evil-surround=
+
 Enable surround everywhere
 
 #+BEGIN_SRC emacs-lisp
@@ -115,6 +119,7 @@ Enable surround everywhere
     (global-evil-surround-mode 1))
 #+END_SRC
 
+** =evil-org=
 Use evil with org: sets org-agenda
 
 #+BEGIN_SRC emacs-lisp
@@ -132,13 +137,43 @@ Use evil with org: sets org-agenda
 
 Task Management with Org Mode.
 
-Transform asterisks to pretty bullets.
+#+BEGIN_SRC emacs-lisp
+(use-package org)
+(require 'org)
+#+END_SRC
+
+** Todo Keywords definitions
+
+We have TODO, IN-PROGRESS, WAITING, and DONE/CANCELLED
+
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keywords
+  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+(setq org-todo-keyword-faces
+      '(("TODO" :foreground "red" :weight bold)
+	  ("IN-PROGRESS" :foreground "blue" :weight bold)
+	  ("WAITING" :foreground "orange" :weight bold)
+	  ("DONE" :foreground "forest green" :weight bold)
+	  ("CANCELLED" :foreground "magenta" :weight bold)))
+
+#+END_SRC
+
+** Todo Selection
+
+Change a task state using =C-c C-t KEY=
+#+BEGIN_SRC emacs-lisp
+(setq org-use-fast-todo-selection t)
+#+END_SRC
+
+** Transform asterisks to pretty bullets.
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :init
     (add-hook 'org-mode-hook 'org-bullets-mode))
 #+END_SRC
+
+** Org downward arrow
 
 I like seeing a little downward-pointing arrow instead of the usual ellipsis
 (=...=) that org displays when there's stuff under a header.
@@ -147,8 +182,35 @@ I like seeing a little downward-pointing arrow instead of the usual ellipsis
   (setq org-ellipsis "⤵")
 #+END_SRC
 
+** Syntax highlighting
+
 Use syntax highlighting in source blocks while editing.
 
 #+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-edit-src-content-indentation 0)
+#+END_SRC
+** Exports
+
+We want to be able to export to several different formats.
+
+*** HTML
+
+#+BEGIN_SRC emacs-lisp
+   (use-package htmlize)
+#+END_SRC
+
+*** Markdown
+
+This should be handled automatically be handled with =htmlize=
+
+*** Github-Flavored Markdown
+
+Handy for exporting/writing READMEs on Github.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ox-gfm)
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
 #+END_SRC

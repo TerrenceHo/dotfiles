@@ -33,13 +33,16 @@
 
 (use-package solarized-theme
   :config
-  (load-theme 'solarized-dark t)
   (setq solarized-scale-org-headlines nil)
   (setq solarized-use-variable-pitch nil
       solarized-height-plus-1 1.0
       solarized-height-plus-2 1.0
       solarized-height-plus-3 1.0
       solarized-height-plus-4 1.0))
+  (load-theme 'solarized-dark t)
+
+(setq user-full-name "Terrence Ho"
+      user-mail-address "terrenceho.books@gmail.com")
 
 (use-package evil
   :config
@@ -58,6 +61,20 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+(use-package org)
+(require 'org)
+
+(setq org-todo-keywords
+  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+(setq org-todo-keyword-faces
+      '(("TODO" :foreground "red" :weight bold)
+	  ("IN-PROGRESS" :foreground "blue" :weight bold)
+	  ("WAITING" :foreground "orange" :weight bold)
+	  ("DONE" :foreground "forest green" :weight bold)
+	  ("CANCELLED" :foreground "magenta" :weight bold)))
+
+(setq org-use-fast-todo-selection t)
+
 (use-package org-bullets
   :init
   (add-hook 'org-mode-hook 'org-bullets-mode))
@@ -65,3 +82,11 @@
 (setq org-ellipsis "⤵")
 
 (setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-edit-src-content-indentation 0)
+
+(use-package htmlize)
+
+(use-package ox-gfm)
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
