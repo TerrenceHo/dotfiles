@@ -90,3 +90,7 @@
 (use-package ox-gfm)
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
+
+(use-package ox-hugo
+  :ensure t            ;Auto-install the package from Melpa (optional)
+  :after ox)
