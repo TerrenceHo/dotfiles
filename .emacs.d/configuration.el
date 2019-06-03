@@ -30,16 +30,25 @@
 (sensible-defaults/yank-to-point-on-mouse-click)
 (sensible-defaults/use-all-keybindings)
 (sensible-defaults/backup-to-temp-directory)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-(use-package solarized-theme
+;; (use-package solarized-theme
+;;   :config
+;;   (setq solarized-scale-org-headlines nil)
+;;   (setq solarized-use-variable-pitch nil
+;;       solarized-height-plus-1 1.0
+;;       solarized-height-plus-2 1.0
+;;       solarized-height-plus-3 1.0
+;;       solarized-height-plus-4 1.0))
+;;   (load-theme 'solarized-dark t)
+(use-package doom-themes
+  :init
+  (load-theme 'doom-city-lights t)
   :config
-  (setq solarized-scale-org-headlines nil)
-  (setq solarized-use-variable-pitch nil
-      solarized-height-plus-1 1.0
-      solarized-height-plus-2 1.0
-      solarized-height-plus-3 1.0
-      solarized-height-plus-4 1.0))
-  (load-theme 'solarized-dark t)
+  (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
+        doom-themes-enable-italic nil) ; if nil, italics is universally disabled
+  (doom-themes-org-config)
+  )
 
 (setq user-full-name "Terrence Ho"
       user-mail-address "terrenceho.books@gmail.com")
@@ -48,9 +57,25 @@
   :config
   (evil-mode 1))
 
+(setq evil-vsplit-window-right t) ;; like vim's 'splitright'
+(setq evil-split-window-below t) ;; like vim's 'splitbelow'
+
+(use-package evil-leader
+  :ensure t
+  :config
+  (global-evil-leader-mode))
+;; (evil-leader/set-leader "\\")
+(evil-leader/set-key
+  "b" 'switch-to-buffer)
+
 (use-package evil-surround
   :config
   (global-evil-surround-mode 1))
+
+(use-package evil-commentary
+    :ensure t
+    :bind (:map evil-normal-state-map
+                ("gc" . evil-commentary)))
 
 (use-package evil-org
   :after org
@@ -65,7 +90,7 @@
 (require 'org)
 
 (setq org-todo-keywords
-  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@/!)")))
 (setq org-todo-keyword-faces
       '(("TODO" :foreground "red" :weight bold)
 	  ("IN-PROGRESS" :foreground "blue" :weight bold)
@@ -80,10 +105,14 @@
   (add-hook 'org-mode-hook 'org-bullets-mode))
 
 (setq org-ellipsis "⤵")
+(set-face-attribute 'org-ellipsis nil :foreground "##61a49e")
 
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
 (setq org-edit-src-content-indentation 0)
+
+(add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
+(add-hook 'org-mode-hook 'auto-fill-mode)
 
 (use-package htmlize)
 

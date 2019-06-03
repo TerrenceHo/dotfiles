@@ -46,30 +46,31 @@ cutting edge.
      - Making dired file sizes human-readable,
 
  #+BEGIN_SRC emacs-lisp
-   (load "~/code/src/github.com/hrs/sensible-defaults.el/sensible-defaults.el")
-   (sensible-defaults/open-files-from-home-directory)
-   (sensible-defaults/increase-gc-threshold)
-   (sensible-defaults/delete-trailing-whitespace)
-   (sensible-defaults/treat-camelcase-as-separate-words)
-   (sensible-defaults/automatically-follow-symlinks)
-   (sensible-defaults/make-scripts-executable)
-   (sensible-defaults/single-space-after-periods)
-   (sensible-defaults/offer-to-create-parent-directories-on-save)
-   (sensible-defaults/apply-changes-to-highlighted-region)
-   (sensible-defaults/overwrite-selected-text)
-   (sensible-defaults/ensure-that-files-end-with-newline)
-   (sensible-defaults/confirm-closing-emacs)
-   (sensible-defaults/quiet-startup)
-   (sensible-defaults/make-dired-file-sizes-human-readable)
-   (sensible-defaults/shorten-yes-or-no)
-   (sensible-defaults/always-highlight-code)
-   (sensible-defaults/refresh-buffers-when-files-change)
-   (sensible-defaults/show-matching-parens)
-   (sensible-defaults/set-default-line-length-to 80)
-   (sensible-defaults/open-clicked-files-in-same-frame-on-mac)
-   (sensible-defaults/yank-to-point-on-mouse-click)
-   (sensible-defaults/use-all-keybindings)
-   (sensible-defaults/backup-to-temp-directory)
+ (load "~/code/src/github.com/hrs/sensible-defaults.el/sensible-defaults.el")
+ (sensible-defaults/open-files-from-home-directory)
+ (sensible-defaults/increase-gc-threshold)
+ (sensible-defaults/delete-trailing-whitespace)
+ (sensible-defaults/treat-camelcase-as-separate-words)
+ (sensible-defaults/automatically-follow-symlinks)
+ (sensible-defaults/make-scripts-executable)
+ (sensible-defaults/single-space-after-periods)
+ (sensible-defaults/offer-to-create-parent-directories-on-save)
+ (sensible-defaults/apply-changes-to-highlighted-region)
+ (sensible-defaults/overwrite-selected-text)
+ (sensible-defaults/ensure-that-files-end-with-newline)
+ (sensible-defaults/confirm-closing-emacs)
+ (sensible-defaults/quiet-startup)
+ (sensible-defaults/make-dired-file-sizes-human-readable)
+ (sensible-defaults/shorten-yes-or-no)
+ (sensible-defaults/always-highlight-code)
+ (sensible-defaults/refresh-buffers-when-files-change)
+ (sensible-defaults/show-matching-parens)
+ (sensible-defaults/set-default-line-length-to 80)
+ (sensible-defaults/open-clicked-files-in-same-frame-on-mac)
+ (sensible-defaults/yank-to-point-on-mouse-click)
+ (sensible-defaults/use-all-keybindings)
+ (sensible-defaults/backup-to-temp-directory)
+ (add-hook 'text-mode-hook 'turn-on-auto-fill)
  #+END_SRC
 
 ** Color Scheme
@@ -77,15 +78,23 @@ cutting edge.
 Using solarized dark theme.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package solarized-theme
-    :config
-    (setq solarized-scale-org-headlines nil)
-    (setq solarized-use-variable-pitch nil
-	solarized-height-plus-1 1.0
-	solarized-height-plus-2 1.0
-	solarized-height-plus-3 1.0
-	solarized-height-plus-4 1.0))
-    (load-theme 'solarized-dark t)
+;; (use-package solarized-theme
+;;   :config
+;;   (setq solarized-scale-org-headlines nil)
+;;   (setq solarized-use-variable-pitch nil
+;;       solarized-height-plus-1 1.0
+;;       solarized-height-plus-2 1.0
+;;       solarized-height-plus-3 1.0
+;;       solarized-height-plus-4 1.0))
+;;   (load-theme 'solarized-dark t)
+(use-package doom-themes
+  :init
+  (load-theme 'doom-city-lights t)
+  :config
+  (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
+        doom-themes-enable-italic nil) ; if nil, italics is universally disabled
+  (doom-themes-org-config)
+  )
 #+END_SRC
 
 ** Personal Information
@@ -109,6 +118,30 @@ Resources:
     (evil-mode 1))
 #+END_SRC
 
+** Sane splitting
+
+We want to emulate vim's =splitbelow= and =splitright=.
+
+#+BEGIN_SRC emacs-lisp
+(setq evil-vsplit-window-right t) ;; like vim's 'splitright'
+(setq evil-split-window-below t) ;; like vim's 'splitbelow'
+#+END_SRC
+
+** Leader key with =evil-leader=
+
+We want to emulate vim's evil key setup, which enables more configurable
+functionality.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-leader
+  :ensure t
+  :config
+  (global-evil-leader-mode))
+;; (evil-leader/set-leader "\\")
+(evil-leader/set-key
+  "b" 'switch-to-buffer)
+#+END_SRC
+
 ** =evil-surround=
 
 Enable surround everywhere
@@ -117,6 +150,17 @@ Enable surround everywhere
   (use-package evil-surround
     :config
     (global-evil-surround-mode 1))
+#+END_SRC
+
+** =evil-commentary=
+
+Easy commenting is always necessary. Press =g c c= to comment a line of code.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-commentary
+    :ensure t
+    :bind (:map evil-normal-state-map
+                ("gc" . evil-commentary)))
 #+END_SRC
 
 ** =evil-org=
@@ -144,11 +188,21 @@ Task Management with Org Mode.
 
 ** Todo Keywords definitions
 
-We have TODO, IN-PROGRESS, WAITING, and DONE/CANCELLED
+We have TODO, IN-PROGRESS, WAITING, and DONE/CANCELLED. DONE/CANCELLED both
+represent the finished state.
+
+Explanation of timestamps and notes (=@= represents a note, =!= represents a
+timestamp:
+
+- When WAITING, we want to give a timestamp and a note explaining why.
+- When DONE, we want to set a timestamp when it was done
+- When CANCELLED, we want to give a timestamp and a note explaining why.
+
+Additionally, we set some colors to the TODO states.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
-  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@/!)")))
 (setq org-todo-keyword-faces
       '(("TODO" :foreground "red" :weight bold)
 	  ("IN-PROGRESS" :foreground "blue" :weight bold)
@@ -161,11 +215,12 @@ We have TODO, IN-PROGRESS, WAITING, and DONE/CANCELLED
 ** Todo Selection
 
 Change a task state using =C-c C-t KEY=
+
 #+BEGIN_SRC emacs-lisp
 (setq org-use-fast-todo-selection t)
 #+END_SRC
 
-** Transform asterisks to pretty bullets.
+** Transform asterisks to pretty bullets
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -176,10 +231,12 @@ Change a task state using =C-c C-t KEY=
 ** Org downward arrow
 
 I like seeing a little downward-pointing arrow instead of the usual ellipsis
-(=...=) that org displays when there's stuff under a header.
+(=...=) that org displays when there's stuff under a header. We also want to set
+the ellipsis color to something a little brighter.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-ellipsis "⤵")
+(setq org-ellipsis "⤵")
+(set-face-attribute 'org-ellipsis nil :foreground "##61a49e")
 #+END_SRC
 
 ** Syntax highlighting
@@ -190,6 +247,15 @@ Use syntax highlighting in source blocks while editing.
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (setq org-edit-src-content-indentation 0)
+#+END_SRC
+** Auto New Line at 80 characters
+
+We want our lines to wrap at 80 characters, since that's the nicest way to view
+text, even in org mode.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
+(add-hook 'org-mode-hook 'auto-fill-mode)
 #+END_SRC
 ** Exports
 
@@ -224,3 +290,19 @@ then have it converted into markdown.
   :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
 #+END_SRC
+
+* TODO Emacs Config Setup [1/7]
+** TODO Setup Evil [1/3]
+*** IN-PROGRESS Setup more familiar key bindings
+*** DONE Setup evil leader, set up key bingings
+    - State "DONE"       from "TODO"       [2019-06-02 Sun 22:02]
+*** IN-PROGRESS Set up plugins
+** TODO Set up Org [0/2]
+*** TODO Set up org-agenda
+*** TODO Set up org calendar
+** TODO Set up Projectile
+** TODO Set up Helm
+** TODO Set up Magit
+** DONE Set up Doom Themes
+   - State "DONE"       from "TODO"       [2019-06-02 Sun 22:02]
+** TODO Set up powerline
