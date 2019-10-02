@@ -50,8 +50,12 @@
   (doom-themes-org-config)
   )
 
+(scroll-bar-mode -1)
+
 (setq user-full-name "Terrence Ho"
       user-mail-address "terrenceho.books@gmail.com")
+
+(setq-default tab-width 4)
 
 (use-package evil
   :config
@@ -59,6 +63,18 @@
 
 (setq evil-vsplit-window-right t) ;; like vim's 'splitright'
 (setq evil-split-window-below t) ;; like vim's 'splitbelow'
+
+;; (use-package nlinum-relative
+;;     :config
+;;     ;; something else you want
+;;     (nlinum-relative-setup-evil)             ;; setup for evil
+;;     (setq nlinum-relative-current-symbol "") ;; "" for the current line number
+;;     (setq nlinum-relative-redisplay-delay 0) ;; delay
+;;     (add-hook 'text-mode-hook 'nlinum-relative-mode))
+
+;; (let ((height (face-attribute 'default :height)))
+;;   ;; only for `nlinum-relative' users:
+;;   (set-face-attribute 'nlinum-relative-current-face nil :height height))
 
 (use-package evil-leader
   :ensure t
@@ -89,11 +105,12 @@
 (use-package org)
 (require 'org)
 
+(setq org-log-done 'time)
 (setq org-todo-keywords
-  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@/!)")))
+  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@)" "|" "DONE(d)" "CANCELLED(c@)")))
 (setq org-todo-keyword-faces
       '(("TODO" :foreground "red" :weight bold)
-	  ("IN-PROGRESS" :foreground "blue" :weight bold)
+	  ("IN-PROGRESS" :foreground "dodger blue" :weight bold)
 	  ("WAITING" :foreground "orange" :weight bold)
 	  ("DONE" :foreground "forest green" :weight bold)
 	  ("CANCELLED" :foreground "magenta" :weight bold)))
@@ -123,3 +140,11 @@
 (use-package ox-hugo
   :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (python . t)
+   ))
+;; Syntax highlight in #+BEGIN_SRC blocks
+(setq org-src-fontify-natively t)

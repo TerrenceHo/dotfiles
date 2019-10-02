@@ -8,9 +8,7 @@ This is a literate programming configuration file, written in Org. I can write
 code blocks within this file along side documentation, so I can keep track of
 everything that is being configured. =org-babel= is used to execute the ELisp
 code being written.
-
 * Configure with =use-package=
-
 Use-package is used to install and configure my packages.
 
 The .emacs startup file should already use =use-package=, this ensures that we
@@ -32,7 +30,6 @@ cutting edge.
 
   (setq load-prefer-newer t)
 #+END_SRC
-
 * Overall Configurations
 ** Using Sensible Defaults
 
@@ -75,7 +72,7 @@ cutting edge.
 
 ** Color Scheme
 
-Using solarized dark theme.
+Using doom-city-lights theme.
 
 #+BEGIN_SRC emacs-lisp
 ;; (use-package solarized-theme
@@ -97,12 +94,28 @@ Using solarized dark theme.
   )
 #+END_SRC
 
+** UI
+
+Don't want scroll bar, takes up space.
+
+#+BEGIN_SRC emacs-lisp
+  (scroll-bar-mode -1)
+#+END_SRC
+
 ** Personal Information
 
  #+BEGIN_SRC emacs-lisp
  (setq user-full-name "Terrence Ho"
        user-mail-address "terrenceho.books@gmail.com")
  #+END_SRC
+* Programming Environments
+
+I like having 4 character tabs.
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default tab-width 4)
+#+END_SRC
+
 * =evil-mode=
 
 Using =evil-mode= is the only way to use emacs. Provides vim-bindings as an
@@ -127,6 +140,24 @@ We want to emulate vim's =splitbelow= and =splitright=.
 (setq evil-split-window-below t) ;; like vim's 'splitbelow'
 #+END_SRC
 
+** Relative Number Line
+
+One of Vim's best features is its relative number line. We use the
+=nlinum-relative= package to emulate this feature.
+
+#+BEGIN_SRC emacs-lisp
+;; (use-package nlinum-relative
+;;     :config
+;;     ;; something else you want
+;;     (nlinum-relative-setup-evil)             ;; setup for evil
+;;     (setq nlinum-relative-current-symbol "") ;; "" for the current line number
+;;     (setq nlinum-relative-redisplay-delay 0) ;; delay
+;;     (add-hook 'text-mode-hook 'nlinum-relative-mode))
+
+;; (let ((height (face-attribute 'default :height)))
+;;   ;; only for `nlinum-relative' users:
+;;   (set-face-attribute 'nlinum-relative-current-face nil :height height))
+#+END_SRC
 ** Leader key with =evil-leader=
 
 We want to emulate vim's evil key setup, which enables more configurable
@@ -201,15 +232,15 @@ timestamp:
 Additionally, we set some colors to the TODO states.
 
 #+BEGIN_SRC emacs-lisp
+(setq org-log-done 'time)
 (setq org-todo-keywords
-  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@/!)")))
+  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@)" "|" "DONE(d)" "CANCELLED(c@)")))
 (setq org-todo-keyword-faces
       '(("TODO" :foreground "red" :weight bold)
-	  ("IN-PROGRESS" :foreground "blue" :weight bold)
+	  ("IN-PROGRESS" :foreground "dodger blue" :weight bold)
 	  ("WAITING" :foreground "orange" :weight bold)
 	  ("DONE" :foreground "forest green" :weight bold)
 	  ("CANCELLED" :foreground "magenta" :weight bold)))
-
 #+END_SRC
 
 ** Todo Selection
@@ -291,7 +322,24 @@ then have it converted into markdown.
   :after ox)
 #+END_SRC
 
-* TODO Emacs Config Setup [1/7]
+** =org-babel=
+
+=org-babel= allows us to execute certain code blocks of certain languages.
+
+Languages:
+
+- Python
+
+#+BEGIN_SRC emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (python . t)
+   ))
+;; Syntax highlight in #+BEGIN_SRC blocks
+(setq org-src-fontify-natively t)
+#+END_SRC
+* TODO Emacs Config Setup [1/8]
 ** TODO Setup Evil [1/3]
 *** IN-PROGRESS Setup more familiar key bindings
 *** DONE Setup evil leader, set up key bingings
@@ -302,7 +350,12 @@ then have it converted into markdown.
 *** TODO Set up org calendar
 ** TODO Set up Projectile
 ** TODO Set up Helm
+*** TODO Look into whether ivy is a better choice
+
+Ivy is more minimal than Helm, but Helm thus far has more integrations than ivy
+does. Ivy is supposed to be faster, but unknown if this is actually true.
+
+** TODO Set up Dired
 ** TODO Set up Magit
 ** DONE Set up Doom Themes
-   - State "DONE"       from "TODO"       [2019-06-02 Sun 22:02]
-** TODO Set up powerline
+** TODO Set up NeoTree

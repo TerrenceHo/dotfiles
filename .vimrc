@@ -63,7 +63,7 @@ set tabstop=4       " The width of a TAB is set to 4.
 set shiftwidth=4    " Indents will have a width of 4
 set softtabstop=4   " Sets the number of columns for a TAB
 set expandtab       " Expand TABs to spaces
-set autoindent 
+set autoindent
 set textwidth=80
 set fileformat=unix
 set backspace=indent,eol,start
@@ -114,8 +114,8 @@ set showmatch
 set wildmenu
 
 function! PositionCursonFromViminfo()
-    if !(bufname("%") =~ '\(COMMIT_EDITMSG\)') && line("'\"") > 1 && line("'\"") <= line("$") 
-        exe "normal! g`\"" 
+    if !(bufname("%") =~ '\(COMMIT_EDITMSG\)') && line("'\"") > 1 && line("'\"") <= line("$")
+        exe "normal! g`\""
     endif
 endfunction
 :au BufReadPost * call PositionCursonFromViminfo()
@@ -171,7 +171,7 @@ let g:ycm_server_log_level = 'debug'
 
 " Syntastic
 let g:syntastic_mode_map = { 'mode': 'passive' } "Sets syntastic checker to command only
-nnoremap <silent> <F8> :SyntasticCheck<CR> 
+nnoremap <silent> <F8> :SyntasticCheck<CR>
 
 " NerdTree
 map <F9> :NERDTreeToggle<CR>
@@ -185,7 +185,7 @@ let g:airline#extensions#branch#enabled=1
 let g:tagbar_ctags_bin='/usr/local/bin/ctags'  " Proper Ctags locations
 let g:tagbar_width=26 "Width for tagbar
 let g:tagbar_autoclose = 1
-nnoremap <silent> <F10> :TagbarToggle<CR> 
+nnoremap <silent> <F10> :TagbarToggle<CR>
 set tags=tags
 map <F7> :!ctags -R .<cr>
 

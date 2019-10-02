@@ -168,8 +168,17 @@ function parse_git_branch() {
    git branch 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1) $(parse_git_dirty) /"
 }
 
+function shorten_path_prompt() {
+  echo $(pwd | perl -pe "
+   BEGIN {
+      binmode STDIN,  ':encoding(UTF-8)';
+      binmode STDOUT, ':encoding(UTF-8)';
+   }; s|^$HOME|~|g; s|/([^/])[^/]*(?=/)|/\$1|g
+")
+}
+
 local ret_status="%(?:%B%F{green}➜ %f%b:%B%F{red}➜ %f%b)"
-PROMPT='${ret_status} %B%F{125}%n%F{245}@%F{166}%m %F{33}%~ %F{61}$(parse_git_branch)%F{245}$ %f%b'
+PROMPT='${ret_status} %B%F{125}%n%F{245}@%F{166}%m %F{33}$(shorten_path_prompt) %F{61}$(parse_git_branch)%F{245}$ %f%b'
 
 #-----------------------Cool Function---------------------
 function most_useless_use_of_zsh {

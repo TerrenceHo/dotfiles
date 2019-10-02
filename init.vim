@@ -156,6 +156,7 @@ let g:airline#extensions#branch#enabled=1
 let g:LanguageClient_serverCommands = {
   \ 'go': ['gopls'],
   \ 'rust': ['rls'],
+  \ 'python': ['/usr/local/bin/pyls'],
   \ }
 nnoremap <leader>r :call LanguageClient_contextMenu()<CR>
 
