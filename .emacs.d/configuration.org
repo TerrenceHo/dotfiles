@@ -68,6 +68,7 @@ cutting edge.
  (sensible-defaults/use-all-keybindings)
  (sensible-defaults/backup-to-temp-directory)
  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+ (setq ring-bell-function 'ignore)
  #+END_SRC
 
 ** Color Scheme
@@ -102,12 +103,20 @@ Don't want scroll bar, takes up space.
   (scroll-bar-mode -1)
 #+END_SRC
 
+When scrolling, emacs recenters buffer point. I don't want that to happen, and I
+would rather it be like vim, where it only shows the next line.
+
+#+BEGIN_SRC emacs-lisp
+(setq scroll-conservatively 100)
+#+END_SRC
+
 ** Personal Information
 
  #+BEGIN_SRC emacs-lisp
  (setq user-full-name "Terrence Ho"
        user-mail-address "terrenceho.books@gmail.com")
  #+END_SRC
+
 * Programming Environments
 
 I like having 4 character tabs.
@@ -124,6 +133,10 @@ emulation layer on top of emacs.
 Resources:
     - [[https://www.emacswiki.org/emacs/Evil][EmacsWiki/Evil]]
     - [[https://github.com/noctuid/evil-guide][evil-guide]]
+
+#+BEGIN_SRC emacs-lisp
+(setq evil-want-C-i-jump nil)
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil
@@ -217,6 +230,17 @@ Task Management with Org Mode.
 (require 'org)
 #+END_SRC
 
+Set the default org directory to =~/org=
+#+BEGIN_SRC emacs-lisp
+(setq org-directory "~/org")
+#+END_SRC
+
+Start emacs on my index org file.
+#+BEGIN_SRC emacs-lisp
+(setq initial-buffer-choice "~/org/index.org")
+#+END_SRC
+
+
 ** Todo Keywords definitions
 
 We have TODO, IN-PROGRESS, WAITING, and DONE/CANCELLED. DONE/CANCELLED both
@@ -234,21 +258,158 @@ Additionally, we set some colors to the TODO states.
 #+BEGIN_SRC emacs-lisp
 (setq org-log-done 'time)
 (setq org-todo-keywords
-  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@)" "|" "DONE(d)" "CANCELLED(c@)")))
+  '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@)" "|" "DONE(d)" "CANCELLED(c@)")
+	(sequence "UNREAD(u)" "READING(e)" "STALLED(s@)" "|" "READ(r)")))
 (setq org-todo-keyword-faces
       '(("TODO" :foreground "red" :weight bold)
 	  ("IN-PROGRESS" :foreground "dodger blue" :weight bold)
 	  ("WAITING" :foreground "orange" :weight bold)
 	  ("DONE" :foreground "forest green" :weight bold)
-	  ("CANCELLED" :foreground "magenta" :weight bold)))
+	  ("CANCELLED" :foreground "magenta" :weight bold)
+	  ("UNREAD" :foreground "red" :weight bold)
+	  ("READING" :foreground "dodger blue" :weight bold)
+	  ("STALLED" :foreground "orange" :weight bold)
+	  ("READ" :foreground "forest green" :weight bold)
+))
 #+END_SRC
 
-** Todo Selection
+We want to record the time a task was marked Done.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-log-done 'time)
+#+END_SRC
+
+Ensures a task cannot be marked as done if it has any subtasks that are not
+marked as done.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-enforce-todo-dependencies t)
+(setq org-enforce-todo-checkbox-dependencies t)
+#+END_SRC
 
 Change a task state using =C-c C-t KEY=
 
 #+BEGIN_SRC emacs-lisp
 (setq org-use-fast-todo-selection t)
+#+END_SRC
+
+** =org-agenda=
+
+List of all org-agenda files.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files (list "~/org/index.org"))
+#+END_SRC
+
+Enable org-agenda.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c a") 'org-agenda)
+#+END_SRC
+
+Default number of days to 14.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-span 14)
+#+END_SRC
+
+Begin those weeks three days ago from today, not last Monday.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-start-on-weekday nil)
+(setq org-agenda-start-day "-3d")
+#+END_SRC
+
+Custom Agenda Commands
+
+#+BEGIN_SRC emacs-lisp
+(defun air-org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+
+(setq org-agenda-custom-commands
+      '(("c" "General Agenda Overview"
+         (
+		  (tags "PRIORITY=\"A\""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-overriding-header "High Priority Unfinished Tasks")))
+          (agenda "")
+          (alltodo ""
+                   ((org-agenda-skip-function
+                     '(or (air-org-skip-subtree-if-priority ?A)
+                          (org-agenda-skip-if nil '(scheduled deadline))))))))))
+#+END_SRC
+
+
+Enable diary (for holidays)
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-include-diary t)
+#+END_SRC
+
+Skip holidays I do not follow
+#+BEGIN_SRC emacs-lisp
+(customize-set-variable 'holiday-bahai-holidays nil)
+(customize-set-variable 'holiday-hebrew-holidays nil)
+(customize-set-variable 'holiday-islamic-holidays nil)
+#+END_SRC
+
+** =org-capture=
+
+Set org-mode capture keybinding.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c c") 'org-capture)
+#+END_SRC
+
+I set "~/org/index.org" as the default notes file.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-default-notes-file (concat org-directory "/index.org"))
+(setq org-default-books-file (concat org-directory "/readinglist.org"))
+#+END_SRC
+
+Here we create some templates to new TODOs and other notes that I may have.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-capture-templates
+      `(("t" "Todo" entry (file org-default-notes-file) "* TODO %?\n%u\n")
+        ("s" "Schedule TODO" entry (file org-default-notes-file) "* TODO %?\n%^{SCHEDULED}p\n")
+		("d" "Deadline TODO" entry (file org-default-notes-file) "* TODO %?\n%^{DEADLINE}p\n")
+        ("m" "Meeting" entry (file org-default-notes-file) "* MEETING with %? :MEETING:\n%t")
+        ("i" "Idea" entry (file org-default-notes-file) "* %? :IDEA: \n%t" :clock-in t :clock-resume t)
+		("n" "Quick Notes" entry (file org-default-notes-file) "* %?\n")
+		("b" "Book" entry (file org-default-books-file) "* UNREAD %^{TITLE}\n:PROPERTIES:\n:ADDED: %<[%Y-%02m-%02d]>\n:END:%^{AUTHOR}p\n%^{PUBLISHED}p\n%?" :empty-lines 1)
+        )
+)
+#+END_SRC
+
+Set it up so that refile can target subtrees up to 9 levels deep.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                 (org-agenda-files :maxlevel . 9))))
+#+END_SRC
+
+Let refile use the org-mode outline path, so we can keep track of everything
+hierarchically.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-refile-use-outline-path 'file)
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+#+END_SRC
+
+When starting org capture template I would like to start in insert mode.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-capture-mode-hook 'evil-insert-state)
 #+END_SRC
 
 ** Transform asterisks to pretty bullets
@@ -321,7 +482,12 @@ then have it converted into markdown.
   :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
 #+END_SRC
+** Images
 
+For image labelling when exporting.
+#+BEGIN_SRC emacs-lisp
+(setq org-latex-prefer-user-labels t)
+#+END_SRC
 ** =org-babel=
 
 =org-babel= allows us to execute certain code blocks of certain languages.
@@ -339,23 +505,171 @@ Languages:
 ;; Syntax highlight in #+BEGIN_SRC blocks
 (setq org-src-fontify-natively t)
 #+END_SRC
-* TODO Emacs Config Setup [1/8]
-** TODO Setup Evil [1/3]
-*** IN-PROGRESS Setup more familiar key bindings
-*** DONE Setup evil leader, set up key bingings
-    - State "DONE"       from "TODO"       [2019-06-02 Sun 22:02]
-*** IN-PROGRESS Set up plugins
-** TODO Set up Org [0/2]
-*** TODO Set up org-agenda
-*** TODO Set up org calendar
-** TODO Set up Projectile
-** TODO Set up Helm
-*** TODO Look into whether ivy is a better choice
 
-Ivy is more minimal than Helm, but Helm thus far has more integrations than ivy
-does. Ivy is supposed to be faster, but unknown if this is actually true.
+* =magit=
 
-** TODO Set up Dired
-** TODO Set up Magit
-** DONE Set up Doom Themes
-** TODO Set up NeoTree
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status)))
+#+END_SRC
+
+* =ivy= and =counsel=
+
+I use =ivy= and =counsel= as my completion framework. I configure it to have:
+
+- Use =counsel-M-X= for command completion
+- Replaces =isearch= with =swiper=
+- Uses =smex= to maintain history
+- Enables fuzzy search everywhere except swpier (where it is unhelpful)
+- Includes recent files in the switch buffer
+
+#+BEGIN_SRC emacs-lisp
+(use-package counsel
+  :bind
+  ("M-x" . 'counsel-M-x)
+  ("C-s" . 'swiper)
+
+  :config
+  (use-package flx)
+  (use-package smex)
+
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-re-builders-alist
+        '((swiper . ivy--regex-plus)
+          (t . ivy--regex-fuzzy))))
+#+END_SRC
+* RSS Feeds with =elfeed=
+
+I want to be able to keep track of all RSS sources I read with =elfeed=. Let's
+first install it.
+
+#+BEGIN_SRC emacs-lisp
+(use-package elfeed
+  :bind (:map elfeed-search-mode-map
+			  ("R" . elfeed-mark-all-as-read)
+			  ("0" . elfeed-read-all)
+			  ("1" . elfeed-read-news)
+			  ("2" . elfeed-read-software-development)
+			  ("3" . elfeed-read-personal-finance)
+			  ("4" . elfeed-read-finance)
+			  ("5" . elfeed-read-scientific-journals)
+			  ("6" . elfeed-read-comics)
+			  ("7" . elfeed-read-friends)
+			  ("8" . elfeed-read-boardgames)
+			  ("9" . elfeed-read-trading)
+			  )
+  :init
+  (setq my/default-elfeed-search-filter "@1-month-ago +unread")
+  (setq-default elfeed-search-filter my/default-elfeed-search-filter)
+  (setq elfeed-search-title-max-width 80) ; newspaper titles are long
+  :config
+  (elfeed-set-max-connections 32)
+  (defun elfeed-mark-all-as-read ()
+    "Mark currently shown articles read"
+    (interactive)
+    (mark-whole-buffer)
+    (elfeed-search-untag-all-unread))
+
+  (defun elfeed--read-tag (filter tag)
+    "Template for filtering various feed categories.
+
+   FILTER is the filter string to apply, and TAG is a short name of
+   the displayed category.
+
+   The cursor is moved to the beginning of the first feed line."
+    (setq elfeed-search-filter filter)
+    (elfeed-search-update :force)
+    (goto-char (point-min))
+    (message (concat "elfeed: show " tag)))
+
+  (defun elfeed-read-all ()
+    "Show all new titles (except sport)"
+    (interactive)
+    (elfeed--read-tag my/default-elfeed-search-filter "all"))
+
+  (defun elfeed-read-news ()
+    "Show global news articles"
+    (interactive)
+    (elfeed--read-tag "@1-month-ago +unread +news" "news"))
+
+  (defun elfeed-read-software-development ()
+	"Show software development articles"
+	(interactive)
+	(elfeed--read-tag "@1-month-ago +unread +dev" "dev"))
+
+  (defun elfeed-read-personal-finance ()
+	"Show personal finance articles"
+	(interactive)
+	(elfeed--read-tag "@1-month-ago +unread +personalfinance" "personal finance"))
+
+  (defun elfeed-read-finance ()
+	"show finance articles"
+	(interactive)
+	(elfeed--read-tag "@1-month-ago +unread +finance" "finance"))
+
+  (defun elfeed-read-scientific-journals ()
+    "Show scientific news from major journals"
+    (interactive)
+    (elfeed--read-tag "@1-month-ago +unread +sciencejournal" "scientific journals"))
+
+  (defun elfeed-read-comics ()
+	"show comics"
+	(interactive)
+	(elfeed--read-tag "@1-month-ago +unread +comics" "comics"))
+
+  (defun elfeed-read-friends ()
+	"show friends articles"
+	(interactive)
+	(elfeed--read-tag "@1-month-ago +unread +friends" "friends"))
+
+  (defun elfeed-read-boardgames ()
+	"show boardgames articles"
+	(interactive)
+	(elfeed--read-tag "@1-month-ago +unread +boardgames" "boardgames"))
+  (defun elfeed-read-trading ()
+	"show trading articles"
+	(interactive)
+	(elfeed--read-tag "@1-month-ago +unread +trading" "trading"))
+  )
+#+END_SRC
+
+Instead of listing all my sources in the config file, I want to be able to
+manage my RSS feeds in an org file. We can do that by integrating =elfeed-org=.
+
+#+BEGIN_SRC emacs-lisp
+(use-package elfeed-org
+  :ensure t
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/org/elfeed.org")))
+#+END_SRC
+
+Open elfeed with =C-c r=.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c r") 'elfeed)
+#+END_SRC
+
+We need to integrate elfeed properly with evil.
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'evil-emacs-state-modes 'elfeed-show-mode)
+(add-to-list 'evil-emacs-state-modes 'elfeed-search-mode)
+
+(evil-add-hjkl-bindings elfeed-search-mode-map)
+(evil-add-hjkl-bindings elfeed-show-mode-map)
+#+END_SRC
+
+=elfeed= can also open up entries in a web broswer.
+#+BEGIN_SRC emacs-lisp
+(define-key elfeed-show-mode-map "o" 'elfeed-show-visit)
+(define-key elfeed-search-mode-map "o" 'elfeed-search-browse-url)
+#+END_SRC
+* Emacs configuration Resources
+
+- https://raw.githubusercontent.com/hrs/dotfiles/master/emacs/.emacs.d/configuration.org
+- https://github.com/rememberYou/.emacs.d/blob/master/config.org
+- https://old.reddit.com/r/emacs/comments/9ajxqj/tip_how_i_organize_myself_with_orgmode/

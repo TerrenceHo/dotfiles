@@ -5,3 +5,4 @@ export PATH="/Users/kho/anaconda/bin:$PATH"
 
 
 export PATH="$HOME/.cargo/bin:$PATH"
+source /Users/kho/.ghcup/env

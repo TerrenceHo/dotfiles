@@ -23,9 +23,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(holiday-bahai-holidays nil)
+ '(holiday-hebrew-holidays nil)
+ '(holiday-islamic-holidays nil)
  '(package-selected-packages
    (quote
-    (nlinum-relative doom-themes evil-leader ox-hugo ox-gfm solarized-theme use-package org-bullets markdown-mode evil-visual-mark-mode evil-surround evil-org auto-compile))))
+	(smex flx counsel elfeed-org elfeed magit nlinum-relative doom-themes evil-leader ox-hugo ox-gfm solarized-theme use-package org-bullets markdown-mode evil-visual-mark-mode evil-surround evil-org auto-compile))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
