@@ -11,6 +11,8 @@ alias tl='tmux ls'
 alias sz='source ~/.zshrc'
 alias vz='vim ~/.zshrc'
 
+alias bazel="nocorrect bazel"
+
 # Safety
 alias rm='rm -i'
 alias cp='cp -i'
@@ -44,6 +46,14 @@ alias grep='grep --color'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 alias t='tail -f'
 
+# fzf
+export FZF_DEFAULT_COMMAND="fd --hidden --type f --exclude '.git/'"
+export FZF_DEFAULT_OPTS="-m --layout=reverse --border --height 40% --info=inline"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+export FZF_CTRL_R_COMMAND="$FZF_DEFAULT_COMMAND"
+
+
 # Sorts numeric filenames numerically instead of lexicographically
 alias -g H='| head'
 alias -g T='| tail'
@@ -75,7 +85,7 @@ export HISTIGNORE="ls:[bf]g:exit:reset:clear:htop"
 export HISTSIZE=25000
 
 # Number of lines saved in the history file
-export SAVEHIST=10000
+export SAVEHIST=25000
 
 # Uses OS-provided locking mechanisms for the history file if available to possibly improve performance and decrease the chance of corruption
 setopt hist_fcntl_lock
@@ -99,6 +109,8 @@ autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
+bindkey '^R' history-incremental-search-backward
+
 
 #------------------------QOL Improvements-----------------
 # Uses commas in ls, du, df file size output
@@ -123,7 +135,7 @@ setopt autopushd
 setopt pushd_ignore_dups
  
 # Attempts to correct spelling of all arguments in a line
-setopt correct_all
+setopt correct
 
 # Allows comments in the interactive shell
 setopt interactive_comments

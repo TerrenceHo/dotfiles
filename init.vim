@@ -2,7 +2,7 @@ set nocompatible
 let mapleader = ";"
 
 let g:python2_host_prog = '/usr/local/Cellar/python@2/2.7.15_1/bin/python'  
-let g:python3_host_prog = '/usr/local/Cellar/python3/3.7.5/bin/python3'  
+let g:python3_host_prog = '/usr/local/Cellar/python@3.9/3.9.6/bin/python3'
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -38,8 +38,19 @@ Plug 'Shougo/echodoc.vim'
 
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries' } "Go Plugin
 Plug 'rust-lang/rust.vim' "Rust Plugin
-Plug 'ambv/black' "Python Formatting
+Plug 'psf/black', {'branch': 'stable' } "Python Formatting
+Plug 'Vimjas/vim-python-pep8-indent' " Python indentation
 Plug 'alx741/vim-hindent' "Haskell Formatting
+Plug 'hashivim/vim-terraform' " Terraform formatting
+Plug 'cespare/vim-toml' " Toml formatting
+
+" Add maktaba and codefmt to the runtimepath.
+" (The latter must be installed before it can be used.)
+Plug 'google/vim-maktaba'
+Plug 'google/vim-codefmt'
+" Also add Glaive, which is used to configure codefmt's maktaba flags. See
+" `:help :Glaive` for usage.
+Plug 'google/vim-glaive'
 
 " Writing
 Plug 'vimwiki/vimwiki' "Vim wiki
@@ -115,7 +126,7 @@ inoremap (<cr> (<cr>)<c-o>O
 nnoremap <leader>t :NERDTreeToggle<CR>
 
 nnoremap <leader>f :Files<CR>
-nnoremap <leader>b :buffers<CR>:buffer<Space>
+nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>d :bd<CR>
 
 nnoremap <leader>s :w<CR>
@@ -201,6 +212,12 @@ let g:rustfmt_autosave = 1
 " ----- Black -----
 autocmd BufWritePre *.py execute ':Black'
 
+" ----- codefmt -----
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType proto AutoFormatBuffer clang-format
+augroup END
+
 
 " ----- Vim Wiki -----
 let wiki_1 = {}
@@ -213,6 +230,7 @@ let g:vimwiki_list = [wiki_1]
 
 " ----- fzf -----
 set rtp+=/usr/local/opt/fzf
+let g:fzf_layout = { 'down': '40%' }
 
 " ----- Easy Align -----
 xmap ga <Plug>(EasyAlign)

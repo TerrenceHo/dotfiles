@@ -216,6 +216,9 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 
 (use-package htmlize)
 
+(setq org-latex-with-hyperref nil)
+(setq TeX-auto-untabify 't)
+
 (use-package ox-gfm)
 (eval-after-load "org"
   '(require 'ox-gfm nil t))

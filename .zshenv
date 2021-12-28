@@ -32,12 +32,12 @@ fi
 
 # shell export settings
 export TERM=screen-256color
-export EDITOR=vim
+export EDITOR=nvim
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
 set -o vi
 if (($+commands[vim] )); then
-    export EDITOR="vim"
+    export EDITOR="nvim"
     export USE_EDITOR=$EDITOR
     export VISUAL=$EDITOR
 fi

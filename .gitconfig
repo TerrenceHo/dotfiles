@@ -9,6 +9,8 @@
     ps = push
     cl = clone
     st = status
+    df = diff
+    rb = rebase
     lg = log --graph --pretty=format:'%Cred%h%Creset %Cblue<%ae>%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
     timelog = log --pretty=format:'%Cred%h%Creset - %C(yellow)%ae%Creset - %Cgreen%cd%Creset - %s%Creset' --abbrev-commit --date=iso
 [user]
@@ -17,7 +19,7 @@
 [color]
 	ui = auto
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = ~/.gitignore
     pager = /usr/bin/less
 [color "branch"]

@@ -436,9 +436,9 @@ the ellipsis color to something a little brighter.
 Use syntax highlighting in source blocks while editing.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-src-fontify-natively t)
-  (setq org-src-tab-acts-natively t)
-  (setq org-edit-src-content-indentation 0)
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-edit-src-content-indentation 0)
 #+END_SRC
 ** Auto New Line at 80 characters
 
@@ -459,6 +459,11 @@ We want to be able to export to several different formats.
    (use-package htmlize)
 #+END_SRC
 
+*** Latex
+#+BEGIN_SRC emacs-lisp
+(setq org-latex-with-hyperref nil)
+(setq TeX-auto-untabify 't)
+#+END_SRC
 *** Markdown
 
 This should be handled automatically be handled with =htmlize=
