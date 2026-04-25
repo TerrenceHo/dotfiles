@@ -1,0 +1,46 @@
+general {
+	colors = true
+	interval = 1
+}
+
+order += "cpu_usage"
+order += "disk /"
+order += "wireless _first_"
+order += "battery all"
+order += "volume master"
+order += "tztime utc"
+order += "tztime local"
+
+cpu_usage {
+	format = "CPU %usage "
+}
+
+disk "/" {
+	format = "Used: %percentage_used"
+}
+
+wireless _first_ {
+	format_up = "W: (%quality at %essid) %ip"
+	format_down = "W: down"
+}
+
+volume master {
+        format = "♪:%volume"
+        format_muted = "♪:muted(%volume)"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}
+
+battery all {
+    format = "%status %percentage"
+}
+
+tztime utc {
+    format = "utc: %F %T"
+    timezone = "UTC"
+}
+
+tztime local {
+	format = "local: %A %Y-%m-%d %l:%M:%S %p"
+}

@@ -1,0 +1,6 @@
+set output_plugin=pulse
+
+set resume=true
+set resume=true
+
+colorscheme solarized-dark

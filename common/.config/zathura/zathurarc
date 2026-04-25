@@ -1,0 +1,6 @@
+set window-title-basename "true"
+set selection-clipboard "clipboard"
+
+# bookmarks
+map b feedkeys ":blist <Tab>"
+map B feedkeys ":bmark "

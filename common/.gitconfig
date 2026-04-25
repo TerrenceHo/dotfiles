@@ -1,0 +1,49 @@
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[alias]
+    co = checkout
+    pl = pull
+    cm = commit
+    ps = push
+    cl = clone
+    st = status
+    df = diff
+    rb = rebase
+    br = branch
+    lg = log --graph --pretty=format:'%Cred%h%Creset %Cblue<%ae>%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+    timelog = log --pretty=format:'%Cred%h%Creset - %C(yellow)%ae%Creset - %Cgreen%cd%Creset - %s%Creset' --abbrev-commit --date=iso
+[user]
+	name = Terrence Ho
+	email = terrenceho.books@gmail.com
+[color]
+	ui = auto
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+    pager = /usr/bin/less
+[color "branch"]
+    current = yellow bold
+    local = yellow
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    frag = blue bold
+    old = red bold
+    new = green bold
+    whitespace = black reverse
+
+[color "status"]
+    header = normal
+    added = green
+    changed = yellow
+    untracked = red
+    branch = blue bold
+[push]
+    default = simple
+[branch "master"]
+    remote = origin
+[init]
+	defaultBranch = master

@@ -1,0 +1,32 @@
+set confirm_run=true
+set continue=true
+set continue_album=true
+q
+e
+add /mnt/ntfs-media/music/
+clear
+refresh
+update
+help
+filter
+filter 
+set resume=true
+colorscheme solarized-dark
+colorscheme zenburn
+colorscheme zsnburn
+colorscheme xterm-white
+colorscheme solarized-light
+colorscheme night
+colorscheme jellybeans
+e gruv-box jellybeans
+colorscheme gruvbox-warm
+colorscheme gruvbox
+colorscheme gruvbox-alt
+colorscheme green
+colorscheme green-mono-88
+colorscheme gray-88
+colorscheme dracula
+colorscheme cyan
+color schemecyan
+colorscheme amazon
+pause

@@ -1,0 +1,27 @@
+# -*- mode: gitignore; -*-
+
+# mac folder files
+.DS_Store
+
+# Editor
+.vscode
+
+# Vim swap files
+.*.swp
+.*.swo
+
+# Word temporary
+~$*.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk
+
+# PowerPoint temporary
+~$*.ppt*
+
+
+# tags file
+.tags

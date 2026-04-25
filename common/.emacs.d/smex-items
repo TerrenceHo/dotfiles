@@ -1,0 +1,22 @@
+
+;; ----- smex-history -----
+(
+ describe-fontset
+ describe-font
+ calc
+ ispell-buffer
+ load-file
+ menu-bar-mode
+ tool-bar-mode
+)
+
+;; ----- smex-data -----
+(
+ (menu-bar-mode . 3)
+ (tool-bar-mode . 1)
+ (load-file . 6)
+ (ispell-buffer . 1)
+ (calc . 1)
+ (describe-font . 1)
+ (describe-fontset . 1)
+)
