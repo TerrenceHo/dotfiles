@@ -103,16 +103,16 @@ return {
 				require("nvim-treesitter").install(to_install)
 			end
 
-			-- 2) Enablie highlightinga nd indentation
+			-- 2) Enable highlighting and indentation
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function()
 					pcall(vim.treesitter.start) -- highlighting
 
 					local ft = vim.bo.filetype
 					-- exceptions for indentation
-					-- if ft ~= "c" and ft ~= "cpp" then
-					-- 	vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-					-- end
+					if ft ~= "c" and ft ~= "cpp" then
+						vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					end
 
 					-- treesitter based folding
 					vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
