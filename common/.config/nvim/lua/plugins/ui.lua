@@ -84,6 +84,7 @@ return {
 				"rust",
 				"starlark",
 				"terraform",
+				"toml",
 				"tsx",
 				"typescript",
 				"vim",

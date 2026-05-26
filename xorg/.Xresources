@@ -1,0 +1,114 @@
+!Mouse
+Xcursor.size: 16
+
+!--------------------------------
+! Perl Extensions
+!--------------------------------
+URxvt.perl-ext-common: keyboard-select,resize-font,default,-confirm-paste
+
+!--------------------------------
+! Rofi Config
+!--------------------------------
+! rofi.color-enabled: true
+! rofi.color-window: #000, #000, #000
+! rofi.color-normal: argb:00273238, #c1c1c1, argb:3a273238, #394249, #ffffff
+! rofi.color-active: argb:00273238, #80cbc4, argb:3a273238, #394249, #80cbc4
+! rofi.color-urgent: argb:00273238, #ff1844, argb:3a273238, #394249, #ff1844
+! rofi.hide-scrollbar: true
+
+!--------------------------------
+! Xft Settings
+!--------------------------------
+Xft.dpi:        109
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintslight
+Xft.autohint:   false
+Xft.lcdfilter:  lcddefault
+
+!--------------------------------
+! Keybindings
+!--------------------------------
+! Disable ISO 14755 unicode input so we can use Ctrl-Shift bindings
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+! restore Ctrl+Shift+(c|v)
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+! clipboard
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-s: perl:keyboard-select:search
+URxvt.keyboard-select.clipboard: true
+! resizing font keybindings
+URxvt.keysym.C-minus:     resize-font:smaller
+URxvt.keysym.C-plus:      resize-font:bigger
+URxvt.keysym.C-equal:     resize-font:bigger
+URxvt.keysym.C-0:         resize-font:reset
+URxvt.keysym.C-question:  resize-font:show
+
+!--------------------------------
+! QOL
+!--------------------------------
+!setting geometry height for pixel scaling (for 2560 x 1440 resolution)
+URxvt*geometry: 320x180
+! scroll in relation to buffer (mouse scroll or page up)
+URxvt*scrollWithBuffer: true
+! scroll back to bottom on keypress
+URxvt*scrollTtyKeypress: true
+! remove scroll bar
+URxvt.scrollBar: false
+! set spacing a little tighter
+URxvt.letterSpace: -1
+
+
+!--------------------------------
+! Fonts
+!--------------------------------
+! xft:bitstream fonts
+! URxvt.font: xft:bitstream vera sans mono:size=12:antialias=true
+! URxvt.boldFont: xft:bitstream vera sans mono:bold:size=12:antialias=true
+
+! xft: DejaVu fonts
+URxvt.font: xft:DejaVu Sans Mono:size=13:antialias=true:hinting=true
+URxvt.boldFont: xft:DejaVu Sans Mono:size=13:antialias=true:hinting=true
+
+!--------------------------------
+! Colors
+!--------------------------------
+! special
+*.foreground:  #c5c8c6
+*.background:  #1d1f21
+*.cursorColor: #c5c8c6
+
+! black
+*.color0:      #1d1f21
+*.color8:      #969896
+
+! red
+*.color1:      #cc6666
+*.color9:      #cc6666
+
+! green
+*.color2:      #b5bd68
+*.color10:     #51c021
+
+! yellow
+*.color3:      #f0c674
+*.color11:     #f0c674
+
+! blue
+*.color4:      #81a2be
+*.color12:     #81a2be
+
+! magenta
+*.color5:      #b294bb
+*.color13:     #b294bb
+
+! cyan
+*.color6:      #8abeb7
+*.color14:     #8abeb7
+
+! white
+*.color7:      #c5c8c6
+*.color15:     #ffffff

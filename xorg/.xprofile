@@ -1,0 +1,12 @@
+#!/bin/sh
+
+xrdb -merge "$HOME/.Xresources"
+
+setxkbmap -option caps:escape
+xinput --set-prop 15 'libinput Accel Speed' 0.5
+xset s off -dpms
+
+feh --bg-fill --randomize ~/pictures/wallpaper/*
+
+export DISPLAY XAUTHORITY
+dbus-update-activation-environment --systemd DISPLAY XAUTHORITY
