@@ -1,7 +1,11 @@
+# EMACS
 elpa/
 eln-cache/
 auto-save-list/
+transient/
 
 metadata/
+
+# CMUS
 common/.config/cmus/*
 !common/.config/cmus/rc
