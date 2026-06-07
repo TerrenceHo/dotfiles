@@ -18,6 +18,7 @@ return {
 				bzl = { "buildifier" },
 				c = { "clang-format" },
 				cpp = { "clang-format" },
+				dune = { "format-dune-file" },
 				go = { "goimports" },
 				javascript = { "prettierd" },
 				json = { "prettierd" },

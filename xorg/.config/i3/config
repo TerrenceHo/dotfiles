@@ -25,14 +25,12 @@ font pango:DejaVu Sans Mono 8
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
-exec --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -l $HOME/scripts/lock.sh
 # bind lock session key
 # bindsym $mod+z exec $HOME/scripts/lock.sh
 
@@ -50,12 +48,6 @@ mode "$mode_system" {
 }
 bindsym $mod+Pause mode "$mode_system"
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
-
-# Start picom by default
-exec --no-startup-id picom --config ~/.config/picom/picom.conf
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -208,12 +200,6 @@ workspace $ws2 output $display2
 workspace $ws3 output $display2
 workspace $ws4 output $display2
 
-# start applications
-exec i3-msg 'workspace 1:web; exec /usr/bin/firefox'
-exec i3-msg 'workspace 3:emacs; exec /usr/bin/emacs'
-# exec i3-msg 'workspace 4:music; exec /usr/bin/konsole -e cmus'
-# do this last, to make sure it opens in the right window
-exec i3-msg 'workspace 2:term; exec /usr/bin/konsole' 
 
 # assign applications workspaces
 # assign [class="firefox"] $ws1
@@ -264,3 +250,25 @@ bar {
     tray_output primary
 }
 
+
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id xss-lock -l $HOME/scripts/lock.sh
+
+# Start picom by default
+exec --no-startup-id picom --config ~/.config/picom/picom.conf
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Screen Settings
+exec --no-startup-id xset s off
+exec --no-startup-id xset -dpms
+exec --no-startup-id xset s noblank
+
+# start applications
+exec i3-msg 'workspace 1:web; exec /usr/bin/firefox'
+exec i3-msg 'workspace 3:emacs; exec /usr/bin/emacs'
+# exec i3-msg 'workspace 4:music; exec /usr/bin/konsole -e cmus'
+# do this last, to make sure it opens in the right window
+exec i3-msg 'workspace 2:term; exec /usr/bin/konsole' 

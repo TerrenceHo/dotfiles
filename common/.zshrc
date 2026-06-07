@@ -64,6 +64,7 @@ alias -g M="| most"
 
 # ignore corrections
 alias bazel='nocorrect bazel'
+alias dune='nocorrect dune'
 
 #----------------------------Globbing--------------------
 # Makes globs case-insensitive
@@ -213,7 +214,15 @@ PROMPT='${ret_status} %B%F{125}%n%F{245}@%F{166}%m %F{33}$(shorten_path_prompt) 
 eval $(keychain --eval --quiet id_ed25519)
 
 #----------------------------OCaml--------------------
-eval $(opam env)
+# BEGIN opam configuration
+# This is useful if you're using opam as it adds:
+#   - the correct directories to the PATH
+#   - auto-completion for the opam binary
+# This section can be safely removed at any time if needed.
+[[ ! -r '/home/tho/.opam/opam-init/init.zsh' ]] || source '/home/tho/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
+# END opam configuration
+# eval $(opam env)
 
 #----------------------------Ruby---------------------
 eval "$(mise activate zsh)" 
+
