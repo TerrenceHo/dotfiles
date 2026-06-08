@@ -65,6 +65,7 @@ alias -g M="| most"
 # ignore corrections
 alias bazel='nocorrect bazel'
 alias dune='nocorrect dune'
+alias utop='nocorrect utop'
 
 #----------------------------Globbing--------------------
 # Makes globs case-insensitive
