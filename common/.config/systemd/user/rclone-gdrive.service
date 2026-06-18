@@ -1,0 +1,20 @@
+# ~/.config/systemd/user/rclone-gdrive.service
+[Unit]
+Description=rclone mount Google Drive
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/mkdir -p %h/GoogleDrive
+ExecStart=/usr/bin/rclone mount gdrive: %h/GoogleDrive \
+    --vfs-cache-mode full \
+    --vfs-cache-max-age 72h \
+    --vfs-write-back 5s \
+    --dir-cache-time 5m
+ExecStop=/bin/fusermount -u %h/GoogleDrive
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
