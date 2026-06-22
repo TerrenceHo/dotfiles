@@ -75,3 +75,6 @@ vim.keymap.set("i", "<S-Tab>", function()
 		return "<S-Tab>"
 	end
 end, { expr = true })
+
+-- Toggle between rendered view and raw markdown
+vim.keymap.set("n", "<leader>m", "<cmd>RenderMarkdown toggle<cr>", { desc = "Toggle markdown rendering" })

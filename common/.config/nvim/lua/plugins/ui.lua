@@ -75,6 +75,8 @@ return {
 				"javascript",
 				"lua",
 				"make",
+				"markdown",
+				"markdown_inline",
 				"ocaml",
 				"ocaml_interface",
 				"ocamllex",
