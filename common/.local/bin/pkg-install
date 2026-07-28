@@ -1,0 +1,21 @@
+#!/bin/bash
+PKGDIR="${PKGDIR:-$HOME/.config/pkglists}"
+
+if [[ ! -d "$PKGDIR" ]]; then
+    echo "No pkglists directory found at $PKGDIR"
+    exit 1
+fi
+
+files=("$PKGDIR"/*.txt)
+
+if [[ ! -e "${files[0]}" ]]; then
+    echo "No .txt files found in $PKGDIR"
+    exit 1
+fi
+
+echo "Installing from:"
+printf "  %s\n" "${files[@]}"
+
+# Strip comments and blank lines, merge all files, deduplicate
+grep -h -v '^\s*#' "${files[@]}" | grep -v '^\s*$' | sort -u |
+    yay -S --needed -

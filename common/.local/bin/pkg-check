@@ -1,0 +1,41 @@
+#!/bin/bash
+PKGDIR="${PKGDIR:-$HOME/.config/pkglists}"
+
+if [[ ! -d "$PKGDIR" ]]; then
+    echo "No pkglists directory found at $PKGDIR"
+    exit 1
+fi
+
+# Build sorted list of tracked package names from all list files
+tracked=$(grep -h -v '^\s*#' "$PKGDIR"/*.txt 2>/dev/null | grep -v '^\s*$' | sort -u)
+
+# Explicitly installed native (repo) packages not in any list
+untracked_repo=$(comm -23 <(yay -Qqen | sort) <(echo "$tracked"))
+
+# Explicitly installed foreign (AUR) packages not in any list
+untracked_aur=$(comm -23 <(yay -Qqem | sort) <(echo "$tracked"))
+
+# Tracked packages that aren't actually installed
+missing=$(comm -23 <(echo "$tracked") <(yay -Qqe | sort))
+
+if [[ -n "$untracked_repo" ]]; then
+    echo "=== Untracked repo packages ==="
+    echo "$untracked_repo"
+    echo
+fi
+
+if [[ -n "$untracked_aur" ]]; then
+    echo "=== Untracked AUR packages ==="
+    echo "$untracked_aur"
+    echo
+fi
+
+if [[ -n "$missing" ]]; then
+    echo "=== Tracked but not installed ==="
+    echo "$missing"
+    echo
+fi
+
+if [[ -z "$untracked_repo" && -z "$untracked_aur" && -z "$missing" ]]; then
+    echo "Everything in sync."
+fi

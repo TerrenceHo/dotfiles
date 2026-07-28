@@ -1,0 +1,18 @@
+bemenu-wayland
+dunst
+emacs-wayland
+grim
+i3status
+slurp
+sway
+swaybg
+swayidle
+swaylock
+waybar
+wayland
+wev
+wl-clipboard
+xdg-desktop-portal-wlr
+
+# Desktop Manager (could maybe move to common)
+sddm

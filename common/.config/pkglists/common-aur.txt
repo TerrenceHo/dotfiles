@@ -1,0 +1,9 @@
+buildifier
+claude-code
+conan
+devpod-bin
+prettierd
+tmux-plugin-manager
+tofi
+yay
+zoom
