@@ -212,7 +212,7 @@ local ret_status="%(?:%{$fg_bold[green]%}➜:%{$fg_bold[red]%}➜)"
 PROMPT='${ret_status} %B%F{125}%n%F{245}@%F{166}%m %F{33}$(shorten_path_prompt) %F{61}$(parse_git_branch)%F{245}$ %f%b'
 
 #----------------------------SSH-Agent--------------------
-eval $(keychain --eval --quiet id_ed25519)
+eval $(keychain add --eval --immediate --quiet id_ed25519)
 
 #----------------------------OCaml--------------------
 # BEGIN opam configuration
@@ -226,4 +226,3 @@ eval $(keychain --eval --quiet id_ed25519)
 
 #----------------------------Ruby---------------------
 eval "$(mise activate zsh)" 
-
