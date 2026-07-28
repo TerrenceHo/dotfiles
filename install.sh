@@ -7,6 +7,12 @@ else
     stow -t ~ xorg
 fi
 
+if lspci | grep -qi nvidia; then
+    stow -t ~ nvidia-gpu
+elif lspci | grep -qi amd.*vga\|radeon; then
+    stow -t ~ amd-gpu
+fi
+
 PROFILE=$(find ~/.mozilla/firefox -maxdepth 1 -name '*.default-release' -type d)
-ln -sf ~/dotfiles/firefox/user.js "$PROFILE/user.js"
-ln -sf ~/dotfiles/firefox/chrome "$PROFILE/chrome"
+ln -sfn ~/dotfiles/firefox/user.js "$PROFILE/user.js"
+ln -sfn ~/dotfiles/firefox/chrome "$PROFILE/chrome"
