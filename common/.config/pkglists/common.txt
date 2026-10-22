@@ -172,6 +172,8 @@ firefox
 imv
 konsole
 libreoffice-still
+vlc
+vlc-plugins-all
 zathura
 zathura-cb
 zathura-pdf-mupdf
